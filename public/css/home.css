@@ -60,15 +60,31 @@ a {
     padding-bottom: 128px;
 }
 
-.btn-mulakatim {
+.btn-mulakatim{
     width: 155px;
-    height: 48px;
+    height: 42px;
+    background-color: transparent;
     color: #fff;
-    background-color: rgb(209, 99, 9);
-    background-image: none;
-    border-radius: 8px 8px 8px 8px;
+    border-radius: 30px;
+    border: 1px solid #212529;
+}
+.btn-mulakatim:hover{
+    background-color: white;
+    color: #212529;
+    transform: translateY(-3px);
+    transition: all .2s ease-in-out;
+}
+/* BUTTON 2 */
+.btn-mulakatim::after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 0;
 }
 
+.btn-mulakatim:hover:after {
+  width: 100%;
+}
 .header-img {
     width: 500px;
 }
@@ -91,9 +107,7 @@ a {
    
 }
 .whyColumn:hover{
-    -webkit-box-shadow: 0px 0px 28px 0px rgba(156,156,156,1);
-    -moz-box-shadow: 0px 0px 28px 0px rgba(156,156,156,1);
-    box-shadow: 0px 0px 28px 0px rgba(156,156,156,1);
+    box-shadow: 0 0 32px 0 rgba(0,0,0,.08);
     transform: scale(1.2, 1.2);
     transition: transform .3s,background .3s,border .3s,border-radius .3s,box-shadow .3s;
 }
@@ -106,7 +120,7 @@ a {
     padding: 80px 10px 60px 10px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: yellow;
+    background-color: #f4d672;
     background-image: url(https://d329jirxh7znrd.cloudfront.net/lead-generation/wp-content/uploads/sites/342/2019/12/cta-bg.svg)
 }
 .missionMulakatim{
@@ -116,4 +130,28 @@ a {
 .brand-logo{
     height: 100%;
     width: 100%;
+}
+.box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 25px 5px 15px 5px;
+    border-style: solid;
+    border-width: 0 0 4px 0;
+    border-color: #fa73d1;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: 0 0 32px 0 rgba(0,0,0,.08);
+}
+.factImg{
+    max-height: 380px;
+}
+
+/*
+brandSection
+*/
+.brandSection{
+    background-color: #f6f5fc;
+    padding-top: 65px;
+    padding-bottom: 65px;
 }

@@ -7,7 +7,7 @@
     <div class="container">
         <nav class="menu navbar navbar-expand-lg navbar-light">
 
-            <a class="navbar-brand" href="#">işmülakatım</a>
+            <a class="navbar-brand" href="#">işmülakatım.com</a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -58,7 +58,7 @@
             <h2 class="text-center section-title">Neden İş Mülakatım</h2>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="whyColumn">
                             <img class="whyColumnImg" src="../public/images/search.png" alt="">
                             <div>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="whyColumn">
                             <img class="whyColumnImg" src="../public/images/search.png" alt="">
                             <div>
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="whyColumn">
                             <img class="whyColumnImg" src="../public/images/search.png" alt="">
                             <div>
@@ -91,17 +91,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="whyColumn">
-                            <img class="whyColumnImg" src="../public/images/search.png" alt="">
-                            <div>
-                                <h3>lorem</h3>
-                                <span>
-                                    <div class="10">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque fuga quia reprehenderit sed! Modi </div>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
 </section>
@@ -116,6 +106,39 @@
             </div>
         </section>
         <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h5>Sayılarla Biz</h5>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dicta omnis a. Tempora animi, ullam aut blanditiis vel necessitatibus aperiam ducimus ex voluptate qui, non expedita amet, iusto numquam dolorem iure commodi itaque autem ad?</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <h4>560</h4>
+                                    <span>Mülakat</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <h4>560</h4>
+                                    <span>Mülakat</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <h4>560</h4>
+                                    <span>Mülakat</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <img class="factImg" src="../public/images/facts.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="brandSection">
             <h2 class="text-center section-title">Mülakat Örneği Olan Bazı Şirketler</h2>
             <div class="container">
                 <div class="row">
@@ -140,7 +163,5 @@
                 </div>
             </div>
         </section>
-        <section>
-          
-        </section>
+        
 @endsection('content')
