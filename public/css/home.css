@@ -17,6 +17,15 @@ a {
     text-decoration: none;
     /* no underline */
 }
+.headline {
+    display: block;
+    font-family: Calibri, "Helvetica", san-serif;
+    line-height: 1.5em;
+    color: black;
+    font-size: 32px;
+   
+  
+}
 
 .shape-fill {
     fill: #fff;
@@ -139,7 +148,7 @@ a {
     padding: 25px 5px 15px 5px;
     border-style: solid;
     border-width: 0 0 4px 0;
-    border-color: #fa73d1;
+  
     border-radius: 8px 8px 8px 8px;
     box-shadow: 0 0 32px 0 rgba(0,0,0,.08);
 }
@@ -154,4 +163,22 @@ brandSection
     background-color: #f6f5fc;
     padding-top: 65px;
     padding-bottom: 65px;
+}
+.box-color-1{
+    border-color: #fa73d1;
+}
+.box-color-2{
+    border-color: #52def0;
+}
+.box-color-3{
+    border-color: #5b47ed;
+}
+.box-color-title-1{
+    color: #fa73d1;
+}
+.box-color-title-2{
+    color: #52def0;
+}
+.box-color-title-3{
+    color: #5b47ed;
 }

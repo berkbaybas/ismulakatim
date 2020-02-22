@@ -2,7 +2,9 @@
 
 @section('style')
 <style>
-
+        body{
+            background: #f1f5f8;
+        }
 </style>
 @endsection
 
@@ -37,11 +39,20 @@
 </header>
 @endsection
 @section('content')
-
-    <div class="container">
-        <div id="app">
-            <add-interview></add-interview>
+    <section>
+        <div class="container">
+            <div id="app">
+                <div class="row">
+                    <div class="col-md-9">
+                        <add-interview></add-interview>
+                    </div>
+                    <div class="col-md-3">
+                        <add-interview-info></add-interview-info>
+                    </div>
+                
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
 @endsection

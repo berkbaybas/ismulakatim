@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('add-interview', require('./components/Add_interview.vue').default);
+Vue.component('add-interview-info', require('./components/Add_interview_info.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

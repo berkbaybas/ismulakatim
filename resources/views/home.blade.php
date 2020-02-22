@@ -36,7 +36,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1>Mülakat mı arıyorsunuz</h1>
+                <h1 class="headline">Mülakat mı arıyorsunuz</h1>
                 <h3>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto non dignissimos quod impedit? Veritatis rerum eos</h3>
                 <a href="mulakatekle" class="btn btn-mulakatim">Mülakat Ekle</a>
             </div>
@@ -55,7 +55,7 @@
 @endsection
 @section('content')
 <section>
-            <h2 class="text-center section-title">Neden İş Mülakatım</h2>
+            <h2 class="text-center section-title headline">Neden İş Mülakatım</h2>
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
@@ -109,24 +109,24 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-5">
-                        <h5>Sayılarla Biz</h5>
+                        <h5 class="headline">Sayılarla Biz</h5>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dicta omnis a. Tempora animi, ullam aut blanditiis vel necessitatibus aperiam ducimus ex voluptate qui, non expedita amet, iusto numquam dolorem iure commodi itaque autem ad?</p>
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="box">
-                                    <h4>560</h4>
+                                <div class="box box-color-1">
+                                    <h4 class="box-color-title-1">560</h4>
                                     <span>Mülakat</span>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="box">
-                                    <h4>560</h4>
+                                <div class="box box-color-2">
+                                    <h4 class="box-color-title-2">560</h4>
                                     <span>Mülakat</span>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="box">
-                                    <h4>560</h4>
+                                <div class="box box-color-3">
+                                    <h4 class="box-color-title-3">560</h4>
                                     <span>Mülakat</span>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
             </div>
         </section>
         <section class="brandSection">
-            <h2 class="text-center section-title">Mülakat Örneği Olan Bazı Şirketler</h2>
+            <h2 class="text-center section-title headline">Mülakat Örneği Olan Bazı Şirketler</h2>
             <div class="container">
                 <div class="row">
                     <div class="col-2">
