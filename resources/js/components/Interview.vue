@@ -8,7 +8,7 @@
                     <h2>{{ interview.id }}</h2>
                     <h3>{{ interview.company_name }}</h3>
                     <p>{{ interview.company_interview }}</p>
-                    <button class="btn btn-mulakatim" @click ="examineInterview(interview.id)">incele</button>
+                    <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">incele</button>
                 </div>
             </div>
         </div>
@@ -26,7 +26,6 @@ export default {
                 company_name: '',
                 company_interview: ''
             },
-            interview_id: '',
             pagination: {},
             edit: false
         }
@@ -42,6 +41,9 @@ export default {
                     this.interviews = res.data
                 })
         },
+        examineInterview(id){
+           console.log(id);
+        }
     
     }
 }

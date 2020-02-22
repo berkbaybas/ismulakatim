@@ -25,7 +25,7 @@
                 </form>
             </div>
             <div class="auth">
-                <button class="btn btn-mulakatim">Giriş yap / Üye ol</button>
+                <a class="btn btn-mulakatim">Giriş yap / Üye ol</a>
                 <a class="blog" href="blog">blog ></a>
             </div>
         </nav>
@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h1 class="headline">Mülakat mı arıyorsunuz</h1>
-                <h3>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto non dignissimos quod impedit? Veritatis rerum eos</h3>
+                <h4 class="description">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto non dignissimos quod impedit? Veritatis rerum eos</h4>
                 <a href="mulakatekle" class="btn btn-mulakatim">Mülakat Ekle</a>
             </div>
             <div class="col-md-6">
@@ -110,7 +110,7 @@
                 <div class="row">
                     <div class="col-md-5">
                         <h5 class="headline">Sayılarla Biz</h5>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dicta omnis a. Tempora animi, ullam aut blanditiis vel necessitatibus aperiam ducimus ex voluptate qui, non expedita amet, iusto numquam dolorem iure commodi itaque autem ad?</p>
+                        <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dicta omnis a. Tempora animi, ullam aut blanditiis vel necessitatibus aperiam ducimus ex voluptate qui, non expedita amet, iusto numquam dolorem iure commodi itaque autem ad?</p>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="box box-color-1">
@@ -135,6 +135,36 @@
                     <div class="col-md-7">
                         <img class="factImg" src="../public/images/facts.png" alt="">
                     </div>
+                </div>
+            </div>
+        </section>
+          
+        <section class="commentSection">
+            <h2 class="text-center headline">Hakkımızda Kim Ne diyor</h2>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="commentBox">
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur dicta eaque magnam, dignissimos tempora sapiente aliquid!</p>
+                        </div>
+                        <h4 class="text-center commentName">BERK</h4>   
+                        <p class="text-center commentJob">Bilgisayar Mühendisi</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="commentBox">
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur dicta eaque magnam, dignissimos tempora sapiente aliquid!</p>
+                        </div>
+                        <h4 class="text-center commentName">BERK</h4>   
+                        <p class="text-center commentJob">Bilgisayar Mühendisi</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="commentBox">
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur dicta eaque magnam, dignissimos tempora sapiente aliquid!</p>
+                        </div>
+                        <h4 class="text-center commentName">BERK</h4>   
+                        <p class="text-center commentJob">Bilgisayar Mühendisi</p>
+                    </div>
+                    
                 </div>
             </div>
         </section>
@@ -163,5 +193,6 @@
                 </div>
             </div>
         </section>
-        
+      
+
 @endsection('content')

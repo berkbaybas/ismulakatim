@@ -2016,7 +2016,6 @@ __webpack_require__.r(__webpack_exports__);
         company_name: '',
         company_interview: ''
       },
-      interview_id: '',
       pagination: {},
       edit: false
     };
@@ -2033,6 +2032,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.interviews = res.data;
       });
+    },
+    examineInterview: function examineInterview(id) {
+      console.log(id);
     }
   }
 });
