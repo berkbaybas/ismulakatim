@@ -33,8 +33,20 @@
 @endsection
 @section('content')
 
-<div id="app">
-    <interview></interview>
+<div class="interview-wrapper" style="background: #f1f5f8;">
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <filter-interview></filter-interview>
+                </div>
+                <div class="col-md-9">
+                    <router-view></router-view> 
+                </div>
+            </div>
+        </div>
+      
+    </div>
 </div>
 
 

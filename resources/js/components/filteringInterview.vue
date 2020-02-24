@@ -1,10 +1,7 @@
 <template>
-  <div class="wrapper-interview">
-    <div class="container">
-        <h2 class="text-center interviews-tittle">Tüm Mülakatlar</h2>
-        <div class="row">
-            <div class="col-sm-6" v-for="interview in interviews" v-bind:key="interview.id">
-                <div class="card card-body p-4">
+<div class="wrapper-filtering-interview">
+    <h2 class="text-center filtering-interviews-tittle">{{this.$route.params.company}} Mülakatları</h2>
+        <div class="card card-body p-4"  v-for="interview in interviews" v-bind:key="interview.id">
                     <!-- <h2>{{ interview.id }}</h2> -->
                     <h2> <span class="company-name">Şirketin Adı:</span> {{ interview.company_name }}</h2>
                     <hr>
@@ -14,62 +11,50 @@
                    <router-link :to="{path: interviewLink, params: {id: interview.id } }">
                     <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">İncele</button>   
                     </router-link> 
-                </div>
-            </div>
         </div>
-    </div>
-  </div>
-</template>
 
+</div>
+</template>
 <script>
 export default {
     data(){
         return{
             interviews: [],
-            interview : {
-                id: '',
-                company_name: '',
-                company_job: '',
-                company_interview: '',
-                company_offer: ''
-            },
             interviews_offer :["Teklif yapıldı","Teklif Yapılmadı","Mülakat Yakın Zamanda Gerçekleşti"],
-            pagination: {},
-            edit: false,
-            id: '' // mülakat id sini çekmek için
+            id: ''
         }
     },
-    created(){  
-        this.fetchInterviews();
-    },
     methods: {
-        fetchInterviews(){
-            fetch("api/mulakatlar")
-                .then(res => res.json())
-                .then(res => {   
-                    this.interviews = res.data
-                })
-        },
-        examineInterview(id){
+          examineInterview(id){
            this.id = id // mülakat id sini çekmek için
         }
     },
-    computed : {
+    created(){
+            fetch(`api/mulakatlar/${this.$route.params.company}`)
+                .then(res => res.json())
+                .then(res => {
+                   this.interviews = res.data;
+                   console.log(this.interviews);
+                   
+                })
+    },
+     computed : {
         interviewLink(){
             return `/mulakat/${this.id}`
         }
     }
+    
 }
 </script>
-<style scoped>
-.wrapper-interview{
-    padding-bottom: 30px
-}
-.interviews-tittle{
+<style  scoped>
+.filtering-interviews-tittle{
     padding-top: 30px;
     padding-bottom: 30px;
     color: #002a5b;
     font-size: 42px;
+}
+.wrapper-filtering-interview{
+    /* margin-top: 30px */
 }
 .card{
     border-radius: 14px;
@@ -78,23 +63,5 @@ export default {
     margin-bottom: 1.5rem;
     box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);
     padding: 0 2rem 1.2rem;
-}
-span.company-desc{
-    display: inline;
-    color: #002a5b;
-    font-size: 18px;
-    font-weight: bold;
-}
-span.company-name{
-    display: inline;
-    color: #002a5b;
-    font-size: 32px;
-    font-weight: bold;
-}
-.card h2 {
-    color: #002a5b;
-}
-.card p{
-    color: #002a5b;
 }
 </style>

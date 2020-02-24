@@ -9,6 +9,13 @@
                 class="" 
                 v-model="interview.company_name">
         </div>
+           <div class="field tnb">
+            <label for="company_job">Başvurulan İş</label>
+            <input
+                type="company_job" 
+                class="" 
+                v-model="interview.company_job">
+        </div>
         <div class="field tnbp">
             <label for="interview">Mülakatınız</label>
             <textarea
@@ -24,6 +31,7 @@
         </div>
         <button type="submit" class="btn btn-light btn-interview text-center">Gönder</button>
     </form>
+   
 </div>
 </template>
 <script>
@@ -33,6 +41,7 @@ export default {
             interview : {
                 id: '',
                 company_name: '',
+                company_job: '',
                 company_interview: '',
                 company_offer: ''
             },
@@ -56,6 +65,7 @@ export default {
             .then(res => res.json())
             .then(data => {
                 this.interview.company_name = '',
+                this.interview.company_job = '',
                 this.interview.company_interview = ''
                 this.interview.company_offer = ''
             })

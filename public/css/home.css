@@ -9,6 +9,9 @@ header {
     z-index: 1;
 
 }
+header .headline{
+    font-size: 52px;
+}
 footer{
     background:#f6f5fd;
     padding-bottom: 30px;
@@ -118,8 +121,8 @@ a {
 }
 
 /*section why */
-.section-title{
-    padding-bottom: 65px;
+.section-title {
+    padding-bottom: 50px;
 }
 .whyColumn{
     padding: 35px 20px 35px 20px;
@@ -136,7 +139,22 @@ a {
     transition: transform .3s,background .3s,border .3s,border-radius .3s,box-shadow .3s;
 }
 .whyColumnImg{
+    height: 64px;
     margin-bottom: 28px;
+}
+.why-column-title{
+    height: 32px;
+    font-size: 16px;
+    color: #002a5b;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.why-column-desc{
+    color: #646464;
+    text-align: center;
+    line-height: 1.2;
 }
 .background{
     position: relative;

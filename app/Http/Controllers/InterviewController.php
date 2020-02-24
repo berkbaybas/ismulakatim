@@ -17,7 +17,21 @@ class InterviewController extends Controller
      */
     public function index()
     {
-        $interview = Interview::orderBy('id','desc')->paginate(35);
+        $interview = Interview::orderBy('id','desc')->paginate(50);
+        
+        return InterviewResource::collection($interview);
+    }
+    public function filter(String $request)
+    {
+        
+        $interview = Interview::where('company_name', '=', $request)->paginate(30);
+
+        return InterviewResource::collection($interview);
+    }
+    public function selectCompany()
+    {
+        
+        $interview = Interview::select('company_name')->distinct()->paginate(30);
 
         return InterviewResource::collection($interview);
     }
@@ -42,9 +56,11 @@ class InterviewController extends Controller
     {
         $interview = $request -> isMethod('put') ? Interview::findOrFail
         ($request->interview_id) : new Interview;
+        
 
         $interview->id = $request->input('interview_id');
         $interview->company_name = $request->input('company_name');
+        $interview->company_job = $request->input('company_job');
         $interview->company_interview = $request->input('company_interview');
         $interview->company_offer = $request->input('company_offer');
 

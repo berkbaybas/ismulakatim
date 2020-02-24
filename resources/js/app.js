@@ -19,10 +19,21 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+import VueRouter from "vue-router"
+import { routes } from "./routes"
+
 Vue.component('interview', require('./components/Interview.vue').default);
 Vue.component('add-interview', require('./components/Add_interview.vue').default);
 Vue.component('add-interview-info', require('./components/Add_interview_info.vue').default);
+Vue.component('interview-id', require('./components/InterviewId.vue').default);
+Vue.component('filter-interview', require('./components/filterInterview.vue').default);
+Vue.component('filtering-interview', require('./components/filteringInterview.vue').default);
 
+Vue.use(VueRouter);
+const router = new VueRouter({
+    routes,
+    
+})
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -31,4 +42,5 @@ Vue.component('add-interview-info', require('./components/Add_interview_info.vue
 
 const app = new Vue({
     el: '#app',
+    router
 });

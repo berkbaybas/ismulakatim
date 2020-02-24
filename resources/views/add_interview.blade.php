@@ -44,7 +44,7 @@
             <div id="app">
                 <div class="row">
                     <div class="col-md-9">
-                        <add-interview></add-interview>
+                        <add-interview></add-interview> 
                     </div>
                     <div class="col-md-3">
                         <add-interview-info></add-interview-info>

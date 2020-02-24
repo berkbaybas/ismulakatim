@@ -19,7 +19,9 @@ class Interview extends JsonResource
        return [
            'id' => $this-> id,
            'company_name' => $this -> company_name,
-           'company_interview' => $this -> company_interview
+           'company_job' => $this -> company_job,
+           'company_interview' => $this -> company_interview,
+           'company_offer' => $this -> company_offer
        ];
     }
 }

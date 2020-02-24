@@ -1,8 +1,7 @@
 @extends('layouts/master')
 
 @section('header')
-<header>
-
+<header> 
 <div class="wrapper">
     <div class="container">
         <nav class="menu navbar navbar-expand-lg navbar-light">
@@ -36,8 +35,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="headline">Mülakat mı arıyorsunuz</h1>
-                <h4 class="description">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Architecto non dignissimos quod impedit? Veritatis rerum eos</h4>
+                <h1 class="headline wow slideInLeft">Mülakat mı arıyorsunuz ?</h1>
+                <h4 class="description">Sizde hemen gireceğiniz mülakatlar hakkında gerçek insanlardan mülakatları hakkında kayda değer bilgileri öğrenin veya girdiğiniz mülakat detaylarını paylaşın.</h4>
                 <a href="mulakatekle" class="btn btn-mulakatim">Mülakat Ekle</a>
             </div>
             <div class="col-md-6">
@@ -58,35 +57,46 @@
             <h2 class="text-center section-title headline">Neden İş Mülakatım</h2>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="whyColumn">
-                            <img class="whyColumnImg" src="../public/images/search.png" alt="">
+                            <img class="whyColumnImg" src="{{ URL::asset('images/interview.png') }}" alt="">
                             <div>
-                                <h3>lorem</h3>
+                                <h3 class="why-column-title">Mülakat Öncesi Hazırlığını Yap</h3>
                                 <span>
-                                    <div class="10">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque fuga quia reprehenderit sed! Modi </div>
+                                    <div class="why-column-desc">Tüm mülakatları karşılaştırıp soruları önceden öğrenin. Sürprizlerden olabildiğince kaçının.</div>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="whyColumn">
-                            <img class="whyColumnImg" src="../public/images/search.png" alt="">
+                            <img class="whyColumnImg" src="{{ URL::asset('images/conversation.png') }}" alt="">
                             <div>
-                                <h3>lorem</h3>
+                                <h3 class="why-column-title">Gerçek Mülakatlar ile Kendine Güvenini Arttır</h3>
                                 <span>
-                                    <div class="10">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque fuga quia reprehenderit sed! Modi </div>
+                                    <div class="why-column-desc">Şirketin mülakat taktiğini anlayıp sorulara karşı cevabınızı hazırlayın.</div>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="whyColumn">
-                            <img class="whyColumnImg" src="../public/images/search.png" alt="">
+                            <img class="whyColumnImg" src="{{ URL::asset('images/complaint.png') }}" alt="">
                             <div>
-                                <h3>lorem</h3>
+                                <h3 class="why-column-title">Gerçek İnsanlardan Gerçek Bilgiler</h3>
                                 <span>
-                                    <div class="10">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque fuga quia reprehenderit sed! Modi </div>
+                                    <div class="why-column-desc">Hiçbir bilgi almadan sadece mülakat bilgisini aldığımız gerçek verileri sizlerle buluşturuyoruz.</div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="whyColumn">
+                            <img class="whyColumnImg" src="{{ URL::asset('images/friendship.png') }}" alt="">
+                            <div>
+                                <h3 class="why-column-title">Tamamen ücretsiz</h3>
+                                <span>
+                                    <div class="why-column-desc">Bilgi paylaştıkça değeri artar diyoruz ve tamamen ücretsiz hizmet sağlıyoruz.</div>
                                 </span>
                             </div>
                         </div>
@@ -95,7 +105,6 @@
                 </div>
             </div>
 </section>
-    
         <section>
             <div class="background">
                 <div class="container">
@@ -154,8 +163,8 @@
                         <div class="commentBox">
                             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur dicta eaque magnam, dignissimos tempora sapiente aliquid!</p>
                         </div>
-                        <h4 class="text-center commentName">BERK</h4>   
-                        <p class="text-center commentJob">Bilgisayar Mühendisi</p>
+                        <h4 class="text-center commentName">Samet Tuncer</h4>   
+                        <p class="text-center commentJob">CEO</p>
                     </div>
                     <div class="col-md-4">
                         <div class="commentBox">
@@ -196,3 +205,10 @@
       
 
 @endsection('content')
+
+@section('script')
+<script src="{{ URL::asset('js/wow.js') }}"></script>
+<script>
+new WOW().init();
+</script>
+@endsection
