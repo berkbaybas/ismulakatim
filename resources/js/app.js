@@ -22,17 +22,34 @@ window.Vue = require('vue');
 import VueRouter from "vue-router"
 import { routes } from "./routes"
 
-Vue.component('interview', require('./components/Interview.vue').default);
-Vue.component('add-interview', require('./components/Add_interview.vue').default);
-Vue.component('add-interview-info', require('./components/Add_interview_info.vue').default);
-Vue.component('interview-id', require('./components/InterviewId.vue').default);
-Vue.component('filter-interview', require('./components/filterInterview.vue').default);
-Vue.component('filtering-interview', require('./components/filteringInterview.vue').default);
+
+//Shared
+Vue.component('home-announce', require('./components/shared/HomeAnnounce.vue').default)
+Vue.component('home-why', require('./components/shared/HomeWhy.vue').default)
+Vue.component('home-background', require('./components/shared/HomeBackground.vue').default)
+Vue.component('home-numbers', require('./components/shared/HomeNumbers.vue').default)
+Vue.component('home-comment', require('./components/shared/HomeComment.vue').default)
+Vue.component('home-brand', require('./components/shared/HomeBrand.vue').default)
+
+Vue.component('interviews', require('./components/shared/Interviews.vue').default);
+Vue.component('filter-interview', require('./components/shared/FilterInterview.vue').default);
+Vue.component('add-interview-form', require('./components/shared/AddInterviewForm.vue').default);
+Vue.component('add-interview-info', require('./components/shared/AddInterviewInfo.vue').default);
+
+//Pages
+Vue.component('app-header', require('./components/pages/AppHeader.vue').default)
+Vue.component('app-footer', require('./components/pages/AppFooter.vue').default)
+Vue.component('home', require('./components/pages/Home.vue').default)
+Vue.component('entire-interviews', require('./components/pages/EntireInterviews.vue').default)
+Vue.component('add-interview', require('./components/pages/AddInterview.vue').default)
+Vue.component('filtered-interview', require('./components/pages/FilteredInterview.vue').default);
+Vue.component('interview-id', require('./components/pages/InterviewId.vue').default);
+
 
 Vue.use(VueRouter);
 const router = new VueRouter({
     routes,
-    
+    // mode: "history"
 })
 /**
  * Next, we will create a fresh Vue application instance and attach it to

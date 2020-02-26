@@ -25,14 +25,13 @@ export default {
     }
     },
     created() {
-        
         fetch("api/sirketler")
-                .then(res => res.json())
-                .then(res => {   
-                this.companyNames = res.data
-                console.log(this.companyNames);
-                
-                })
+            .then(res => res.json())
+            .then(res => {   
+            this.companyNames = res.data
+            console.log(this.companyNames);    
+        })
+    
     },
 }
 

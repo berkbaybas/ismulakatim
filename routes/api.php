@@ -21,11 +21,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //List interviews
 Route::get('mulakatlar', 'InterviewController@index');
 
+
+
+
+//List selected company
+Route::get('sirketler', 'InterviewController@selectCompany');
+
+
 //filter interviews
 Route::get('mulakatlar/{company}', 'InterviewController@filter');
 
-//List interviews
-Route::get('sirketler', 'InterviewController@selectCompany');
 
 //List single interview
 Route::get('mulakat/{id}', 'InterviewController@show');

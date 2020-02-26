@@ -11,16 +11,10 @@
 |
 */
 
+use App\Http\Controllers\HomeController;
+
 Route::get('/', function () {
     return view('home');
-});
-
-Route::get('/sirketler', function () {
-    return view('company_interview');
-});
-
-Route::get('/mulakatekle', function () {
-    return view('add_interview');
 });
 
 Auth::routes();

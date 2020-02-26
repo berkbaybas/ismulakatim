@@ -4,7 +4,7 @@ body{
 }
 header {
     background-color: transparent;
-    background-image: linear-gradient(45deg, #fa73d1 0%, #5b47ed 100%);
+    background-image: linear-gradient(45deg, #b15fde 0%, #5c47ed 100%);
     position: relative;
     z-index: 1;
 
@@ -159,7 +159,7 @@ a {
 .background{
     position: relative;
     transition: background 0.3s,border 0.3s,border-radius 0.3s,box-shadow 0.3s;
-    padding: 80px 10px 60px 10px;
+    padding: 100px 10px 60px 10px;
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #f4d672;
@@ -168,10 +168,30 @@ a {
 .missionMulakatim{
     padding-top: 30px;
     padding-bottom: 45px;
+    font-size: 18px;
+    color: #002a5b;
+    font-weight: bolder;
 }
 .brand-logo{
     height: 100%;
     width: 100%;
+    opacity: .3;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+.brand-logo:hover{
+    opacity: 1;
+    filter: none;
+    pointer-events: cursor;
+}
+.logo-wrapper{
+    height: 85px;
+    border-radius: 2px;
+    padding: 15px;
+    margin: 5px;
+    border: solid 1px rgba(77, 77, 77, 0.5);
 }
 .box{
     display: flex;
@@ -194,6 +214,16 @@ numberSection
 .description{
     line-height: 1.7;
 }
+.headline-number{
+    width: 18px;
+    font-size: 42px;
+    line-height: 1.5;
+    margin-bottom: 60px;
+}
+.counter {
+    animation-duration: 1s;
+    animation-delay: 0s;
+  } 
 /*
 commentSection
 */
@@ -266,5 +296,5 @@ brandSection
 }
 
 .wrapperFooter{
-    padding: 155px 0 0 0;
+    padding: 110px 0 0 0;
 }

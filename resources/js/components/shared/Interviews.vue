@@ -16,6 +16,15 @@
                     </router-link> 
                 </div>
             </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li v-bind:class="[{disabled : ! pagination.prev_page_url}]" class="page-item"><a
+                        @click="fetchInterviews(pagination.prev_page_url)" class="page-link" href="#">Önceki Sayfa</a></li>
+                        <li class="page-item disabled"><a class="page-link text-dark" href="#">{{pagination.last_page}}'sayfadan {{pagination.current_page}}.si</a></li>
+                        <li v-bind:class="[{disabled : ! pagination.next_page_url}]" class="page-item"><a
+                        @click="fetchInterviews(pagination.next_page_url)" class="page-link" href="#">Sonraki Sayfa</a></li>
+                    </ul>
+                </nav>
         </div>
     </div>
   </div>
@@ -43,15 +52,30 @@ export default {
         this.fetchInterviews();
     },
     methods: {
-        fetchInterviews(){
-            fetch("api/mulakatlar")
+        fetchInterviews(page_url){
+            let vm = this;
+            page_url = page_url || "api/mulakatlar"
+            fetch(page_url)
                 .then(res => res.json())
                 .then(res => {   
                     this.interviews = res.data
+                   // this.interviews.company_interview = this.interviews.company_interview.slice(0,10)
+                    vm.makePagination(res.meta, res.links);
                 })
+                .catch(err => console.log(err)
+                )
         },
         examineInterview(id){
            this.id = id // mülakat id sini çekmek için
+        },
+        makePagination(meta, links){
+            let pagination = {
+                current_page : meta.current_page,
+                last_page : meta.last_page,
+                next_page_url : links.next,
+                prev_page_url : links.prev
+            }
+            this.pagination = pagination;
         }
     },
     computed : {
@@ -96,5 +120,30 @@ span.company-name{
 }
 .card p{
     color: #002a5b;
+}
+.page-item{
+    border-radius: 4px;
+    display: inline-block;
+
+    margin: 5px;
+    background: rgba(0,42,91,.08);
+    margin-bottom: 15px;
+}
+.page-link{
+    font-size: 1.0rem;
+    color: #002a5b;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+    font-weight: 600;
+    line-height: 1.8;
+    background: 0 0;
+    border: 0;
+    outline: none !important;
+}
+.page-item a {
+    
+    
 }
 </style>

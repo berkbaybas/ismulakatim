@@ -1,4 +1,5 @@
 <template>
+<div class="container">
 <div class="wrapper-filtering-interview">
     <h2 class="text-center filtering-interviews-tittle">{{this.$route.params.company}} Mülakatları</h2>
         <div class="card card-body p-4"  v-for="interview in interviews" v-bind:key="interview.id">
@@ -12,7 +13,10 @@
                     <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">İncele</button>   
                     </router-link> 
         </div>
-
+        <router-link to="/mulakatlar">
+            <button class="btn btn-mulakatim">Geri</button>   
+        </router-link> 
+</div>
 </div>
 </template>
 <script>
@@ -63,5 +67,23 @@ export default {
     margin-bottom: 1.5rem;
     box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);
     padding: 0 2rem 1.2rem;
+}
+span.company-desc{
+    display: inline;
+    color: #002a5b;
+    font-size: 18px;
+    font-weight: bold;
+}
+span.company-name{
+    display: inline;
+    color: #002a5b;
+    font-size: 32px;
+    font-weight: bold;
+}
+.card h2 {
+    color: #002a5b;
+}
+.card p{
+    color: #002a5b;
 }
 </style>
