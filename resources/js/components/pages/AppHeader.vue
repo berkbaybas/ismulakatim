@@ -23,7 +23,9 @@
                 </form>
             </div>
             <div class="auth">
-                <a class="btn btn-mulakatim">Giriş yap / Üye ol</a>
+                <router-link to="/mulakatekle"  
+                ><a class="btn btn-mulakatim">Mülakat Ekle</a></router-link>
+                
                 <a class="blog" href="blog">blog ></a>
             </div>
         </nav>

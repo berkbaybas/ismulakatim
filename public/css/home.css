@@ -23,7 +23,7 @@ footer{
 section{
     padding-top: 65px;
 }
-a {
+a,a:not([href]) {
     color: white;
     text-decoration: none;
     /* no underline */
@@ -86,7 +86,7 @@ a {
     width: 155px;
     height: 42px;
     background-color: #f4d672;
-    color: black;
+    color: black !important;
     font-weight: 400;
     border-radius: 30px;
     border: 2px solid #f4d672;
@@ -94,7 +94,7 @@ a {
 }
 .btn-mulakatim:hover{
     background-color: #FFE285;
-    color: black;
+    color: black !important;
     transform: translateY(-3px);
     transition: all .2s ease-in-out;
 }
@@ -189,9 +189,12 @@ a {
 .logo-wrapper{
     height: 85px;
     border-radius: 2px;
-    padding: 15px;
+    padding: 10px;
     margin: 5px;
     border: solid 1px rgba(77, 77, 77, 0.5);
+}
+.disabled{
+    cursor: not-allowed;
 }
 .box{
     display: flex;
@@ -297,4 +300,11 @@ brandSection
 
 .wrapperFooter{
     padding: 110px 0 0 0;
+}
+
+/* interview-wrapper */
+
+.interview-wrapper{
+    background: rgb(241, 245, 248);
+    padding-bottom: 65px;
 }

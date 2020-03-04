@@ -23,6 +23,22 @@
                 class="" 
                 v-model="interview.company_interview" />
         </div>
+        <div class="field-li field tnbp">
+            <label for="company_question">Şirketin Mülakat Soruları <a @click="newQuestion" class="btn btn-success">soru ekle</a></label>
+            
+            <ul>
+                <li
+                v-for="(question,index) in questions" :key="index"
+                >
+                <span>{{index+1}}-</span>
+                <input 
+                type="text"
+                name="company_question"
+                v-model="question.value"> 
+                <button @click="questions.splice(index,1)" class="btn btn-danger">SİL</button></li>
+            </ul>
+            <!-- {{questions}} -->
+        </div>
          <div class="field tnb">
             <label for="offer">Teklif</label>
             <select name="offer" class="" v-model="interview.company_offer" @change="selected()">
@@ -43,17 +59,28 @@ export default {
                 company_name: '',
                 company_job: '',
                 company_interview: '',
+                company_questions: '',
                 company_offer: ''
             },
             edit: false,
             offers: ["Teklif yapıldı","Teklif Yapılmadı","Mülakat Yakın Zamanda Gerçekleşti"],
-            offerIndex:''
+            offerIndex:'',
+            questions : []
         }
     },
     methods:{
         addInterview(){
+  
         this.interview.company_offer = this.offerIndex;
+
+        // questions arrayindeki elemanları stringe birleştiriyor
+        this.questions.forEach(value => {
+            this.interview.company_questions += (value.value + '+') 
+        });
         if(this.edit === false){
+            
+            console.log(this.interview);//sıkıntı
+            
             //add
             fetch('api/mulakat' , {
                 method: 'post',
@@ -68,6 +95,8 @@ export default {
                 this.interview.company_job = '',
                 this.interview.company_interview = ''
                 this.interview.company_offer = ''
+                this.interview.company_questions = ''
+                this.questions = []
             })
             .catch(err = console.log(err)
             )
@@ -75,6 +104,9 @@ export default {
         },
         selected(){
             this.offerIndex = this.offers.indexOf(this.interview.company_offer)
+        },
+        newQuestion(){
+            this.questions.push({})
         }
     }
 }
@@ -94,7 +126,7 @@ form {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 500px;
+  /* height: 500px; */
 }
 form:after {
   content: '';
@@ -138,6 +170,18 @@ form .field textarea {
     margin-top: 7px;
     background-image: linear-gradient(45deg, #fa73d1 0%, #5b47ed 100%);
     color: white;
-    
+}
+li{
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    border-bottom: 1px solid #999999;
+}
+
+form .field-li input{
+    padding: 1rem 1.5rem 1rem 1rem;
+}
+form .field-li ul{
+    padding-inline-end: 40px;
 }
 </style>

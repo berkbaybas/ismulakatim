@@ -2,10 +2,10 @@
 <section>
 <div class="container">     
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9 col-12">
             <add-interview-form></add-interview-form> 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-12 mb-4">
             <add-interview-info></add-interview-info>
         </div>
     </div>
@@ -25,6 +25,6 @@ export default {
 </script>
 <style scoped>
     body{
-        background: #f1f5f8;
+        background: rgb(241, 245, 248);
     }
 </style>

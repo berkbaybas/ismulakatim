@@ -1,21 +1,21 @@
 <template>
     <div>
         <home-announce></home-announce>
-    <section>
+   
         <home-why></home-why>
-    </section>
+
     <section>
         <home-background></home-background>
     </section>
     <section>
         <home-numbers></home-numbers>
     </section>
-    <section>
+    
         <home-comment></home-comment>
-    </section>
-    <section>
+
+ 
         <home-brand></home-brand>        
-    </section>
+
     </div>
 </template>
 <script>

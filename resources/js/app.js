@@ -21,6 +21,8 @@ window.Vue = require('vue');
 
 import VueRouter from "vue-router"
 import { routes } from "./routes"
+import Vuelidate from 'vuelidate'
+
 
 
 //Shared
@@ -51,6 +53,25 @@ const router = new VueRouter({
     routes,
     // mode: "history"
 })
+
+Vue.use(Vuelidate)
+
+
+// First Letter Capitalize all word
+Vue.filter("toCamelCase" , (value) => {
+    var value = value.toLowerCase().split(' ');
+    for (var i = 0; i < value.length; i++) {
+        // You do not need to check if i is larger than value length, as your for does that for you
+        // Assign it back to the array
+        value[i] = value[i].charAt(0).toUpperCase() + value[i].slice(1);     
+    }
+    // Directly return the joined string
+   
+    return value.join(' '); 
+})
+
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

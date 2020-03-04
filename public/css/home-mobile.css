@@ -1,0 +1,33 @@
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) { 
+    .header-img{
+        padding-top: 15px;
+        max-width: 100%;
+    }
+    .factImg {
+        max-width: 100%;
+    }
+    .announce {
+        padding-top: 16px;
+        padding-bottom: 32px;
+    }
+    h4 {
+        font-size: 1rem;
+    }
+    section {
+        padding-top: 35px;
+    }
+    .box{
+        margin-bottom: 35px;
+    }
+    .section-title {
+        padding-top: 16px;
+        padding-bottom: 0px;
+    }
+    .whyColumn {
+        padding: 35px 5px 35px 5px;
+    }
+    .why-column-title {
+        font-size: 14px;
+    }
+ }

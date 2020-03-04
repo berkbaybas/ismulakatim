@@ -1999,6 +1999,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2010,6 +2015,15 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     examineInterview: function examineInterview(id) {
       this.id = id; // mülakat id sini çekmek için
+    },
+    fontColor: function fontColor(value) {
+      if (value == 0) {
+        return "green";
+      } else if (value == 1) {
+        return "red";
+      } else if (value == 2) {
+        return "orange";
+      }
     }
   },
   created: function created() {
@@ -2105,6 +2119,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2112,6 +2137,7 @@ __webpack_require__.r(__webpack_exports__);
       company_name: '',
       company_interview: '',
       company_job: '',
+      company_question: [],
       company_offer: '',
       interviews_offer: ["Teklif yapıldı", "Teklif Yapılmadı", "Mülakat Yakın Zamanda Gerçekleşti"]
     };
@@ -2132,7 +2158,22 @@ __webpack_require__.r(__webpack_exports__);
         _this.company_interview = res.company_interview;
         _this.company_job = res.company_job;
         _this.company_offer = res.company_offer;
+        _this.company_question = res.company_questions.split("+");
+
+        _this.company_question.pop(); // sondaki + yüzünden bir boş eleman silme kodu
+
       });
+    }
+  },
+  computed: {
+    fontColor: function fontColor() {
+      if (this.company_offer == 0) {
+        return "green";
+      } else if (this.company_offer == 1) {
+        return "red";
+      } else if (this.company_offer == 2) {
+        return "orange";
+      }
     }
   }
 });
@@ -2161,6 +2202,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2168,6 +2220,7 @@ __webpack_require__.r(__webpack_exports__);
       company_name: '',
       company_interview: '',
       company_job: '',
+      company_question: [],
       company_offer: '',
       interviews_offer: ["Teklif yapıldı", "Teklif Yapılmadı", "Mülakat Yakın Zamanda Gerçekleşti"]
     };
@@ -2188,7 +2241,22 @@ __webpack_require__.r(__webpack_exports__);
         _this.company_interview = res.company_interview;
         _this.company_job = res.company_job;
         _this.company_offer = res.company_offer;
+        _this.company_question = res.company_questions.split("+");
+
+        _this.company_question.pop(); // sondaki + yüzünden bir boş eleman silme kodu
+
       });
+    }
+  },
+  computed: {
+    fontColor: function fontColor() {
+      if (this.company_offer == 0) {
+        return "green";
+      } else if (this.company_offer == 1) {
+        return "red";
+      } else if (this.company_offer == 2) {
+        return "orange";
+      }
     }
   }
 });
@@ -2240,6 +2308,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2248,21 +2332,29 @@ __webpack_require__.r(__webpack_exports__);
         company_name: '',
         company_job: '',
         company_interview: '',
+        company_questions: '',
         company_offer: ''
       },
       edit: false,
       offers: ["Teklif yapıldı", "Teklif Yapılmadı", "Mülakat Yakın Zamanda Gerçekleşti"],
-      offerIndex: ''
+      offerIndex: '',
+      questions: []
     };
   },
   methods: {
     addInterview: function addInterview() {
       var _this = this;
 
-      this.interview.company_offer = this.offerIndex;
+      this.interview.company_offer = this.offerIndex; // questions arrayindeki elemanları stringe birleştiriyor
+
+      this.questions.forEach(function (value) {
+        _this.interview.company_questions += value.value + '+';
+      });
 
       if (this.edit === false) {
+        console.log(this.interview); //sıkıntı
         //add
+
         fetch('api/mulakat', {
           method: 'post',
           body: JSON.stringify(this.interview),
@@ -2274,11 +2366,16 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (data) {
           _this.interview.company_name = '', _this.interview.company_job = '', _this.interview.company_interview = '';
           _this.interview.company_offer = '';
+          _this.interview.company_questions = '';
+          _this.questions = [];
         })["catch"](err = console.log(err));
       }
     },
     selected: function selected() {
       this.offerIndex = this.offers.indexOf(this.interview.company_offer);
+    },
+    newQuestion: function newQuestion() {
+      this.questions.push({});
     }
   }
 });
@@ -2307,17 +2404,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       companyNames: [],
-      company: ''
+      company: '',
+      search_company: ''
     };
   },
   computed: {
     interviewLink: function interviewLink() {
       return "/mulakatlar/".concat(this.company);
+    },
+    filteredCompanies: function filteredCompanies() {
+      var _this = this;
+
+      return this.companyNames.filter(function (companyName) {
+        return companyName.company_name.match(_this.search_company);
+      });
     }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    fetch("api/sirketler").then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      _this2.companyNames = res.data;
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/HomeNumbers.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      numberInterview: '',
+      numberCompany: '',
+      numberJob: ''
+    };
   },
   created: function created() {
     var _this = this;
@@ -2325,8 +2493,17 @@ __webpack_require__.r(__webpack_exports__);
     fetch("api/sirketler").then(function (res) {
       return res.json();
     }).then(function (res) {
-      _this.companyNames = res.data;
-      console.log(_this.companyNames);
+      _this.numberCompany = res.data;
+    });
+    fetch("api/NumberInterview").then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      _this.numberInterview = res;
+    });
+    fetch("api/NumberJob").then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      _this.numberJob = res;
     });
   }
 });
@@ -2378,14 +2555,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       interviews: [],
-      interview: {
-        id: '',
-        company_name: '',
-        company_job: '',
-        company_interview: '',
-        company_offer: ''
-      },
+      // interview : {
+      //     id: '',
+      //     company_name: '',
+      //     company_job: '',
+      //     company_interview: '',
+      //     company_questions: '',
+      //     company_offer: ''
+      // },
       interviews_offer: ["Teklif yapıldı", "Teklif Yapılmadı", "Mülakat Yakın Zamanda Gerçekleşti"],
+      // interviews_quest : [],
       pagination: {},
       edit: false,
       id: '' // mülakat id sini çekmek için
@@ -2404,7 +2583,8 @@ __webpack_require__.r(__webpack_exports__);
       fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.interviews = res.data; // this.interviews.company_interview = this.interviews.company_interview.slice(0,10)
+        console.log(res.data);
+        _this.interviews = res.data; // this.interviews_quest = res.data.company_interview.split("+")
 
         vm.makePagination(res.meta, res.links);
       })["catch"](function (err) {
@@ -2422,6 +2602,15 @@ __webpack_require__.r(__webpack_exports__);
         prev_page_url: links.prev
       };
       this.pagination = pagination;
+    },
+    fontColor: function fontColor(value) {
+      if (value == 0) {
+        return "green";
+      } else if (value == 1) {
+        return "red";
+      } else if (value == 2) {
+        return "orange";
+      }
     }
   },
   computed: {
@@ -6976,7 +7165,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nbody[data-v-f471fb14]{\n    background: #f1f5f8;\n}\n", ""]);
+exports.push([module.i, "\nbody[data-v-f471fb14]{\n    background: rgb(241, 245, 248);\n}\n", ""]);
 
 // exports
 
@@ -6995,7 +7184,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.filtering-interviews-tittle[data-v-29157b84]{\r\n    padding-top: 30px;\r\n    padding-bottom: 30px;\r\n    color: #002a5b;\r\n    font-size: 42px;\n}\n.wrapper-filtering-interview[data-v-29157b84]{\r\n    /* margin-top: 30px */\n}\n.card[data-v-29157b84]{\r\n    border-radius: 14px;\r\n    border: 0;\r\n    background: #fff;\r\n    margin-bottom: 1.5rem;\r\n    box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);\r\n    padding: 0 2rem 1.2rem;\n}\nspan.company-desc[data-v-29157b84]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 18px;\r\n    font-weight: bold;\n}\nspan.company-name[data-v-29157b84]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 32px;\r\n    font-weight: bold;\n}\n.card h2[data-v-29157b84] {\r\n    color: #002a5b;\n}\n.card p[data-v-29157b84]{\r\n    color: #002a5b;\n}\r\n", ""]);
+exports.push([module.i, "\nbody[data-v-29157b84]{\r\n    background: rgb(241, 245, 248);\n}\n.filtering-interviews-tittle[data-v-29157b84]{\r\n    padding-top: 30px;\r\n    padding-bottom: 30px;\r\n    color: #002a5b;\r\n    font-size: 42px;\n}\n.wrapper-filtering-interview[data-v-29157b84]{\r\n    /* margin-top: 30px */\n}\n.card[data-v-29157b84]{\r\n    border-radius: 14px;\r\n    border: 0;\r\n    background: #fff;\r\n    margin-bottom: 1.5rem;\r\n    margin-top: 1.5rem;\r\n    box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);\r\n    padding: 0 2rem 1.2rem;\n}\nspan.company-desc[data-v-29157b84]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 18px;\r\n    font-weight: bold;\n}\nspan.company-name[data-v-29157b84]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 32px;\r\n    font-weight: bold;\n}\n.card h2[data-v-29157b84] {\r\n    color: #002a5b;\n}\n.card p[data-v-29157b84]{\r\n    color: #002a5b;\n}\n.router_link[data-v-29157b84]{\r\n    width: 155px;\n}\r\n", ""]);
 
 // exports
 
@@ -7052,7 +7241,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.wrapper-add-interview[data-v-27b6205a]{\r\n  display: flex;\r\n  flex-direction: column;\r\n  justify-content: center;\r\n  align-items: center;  \r\n  background-repeat: no-repeat, repeat;\n}\nform[data-v-27b6205a] {\r\n  margin: 2rem 0;\r\n  display: flex;\r\n  flex-direction: column;\r\n  width: 100%;\r\n  height: 500px;\n}\nform[data-v-27b6205a]:after {\r\n  content: '';\r\n  display: table;\r\n  clear: both;\n}\nform .field[data-v-27b6205a] {\r\n  display: block;\r\n  border: 1px solid #BDBDBD;\r\n  float: left;\r\n  width: 100%;\r\n  margin-bottom: 5px;\n}\nform .field label[data-v-27b6205a] {\r\n    display: block;\r\n    font-size: 1.2rem;\r\n    padding: 1.5rem 2rem 0.5rem;\r\n    text-transform: uppercase;\r\n    color: #999;\r\n    font-weight: 700;\r\n    letter-spacing: 1px;\r\n    background-color: white;\r\n    margin-bottom: 0;\n}\nform .field input[data-v-27b6205a],\r\nform .field textarea[data-v-27b6205a],\r\nform .field select[data-v-27b6205a] {\r\n  display: block;\r\n  width: 100%;\r\n  padding: .5rem 2rem 1.5rem;\r\n  font-size: 1rem;\r\n  border: 0;\r\n  color: #212121;\r\n  outline: 0;\n}\nform .field textarea[data-v-27b6205a] {\r\n  min-height: 150px;\r\n  resize: vertical;\n}\n.btn-interview[data-v-27b6205a]{\r\n    margin-top: 7px;\r\n    background-image: linear-gradient(45deg, #fa73d1 0%, #5b47ed 100%);\r\n    color: white;\n}\r\n", ""]);
+exports.push([module.i, "\n.wrapper-add-interview[data-v-27b6205a]{\r\n  display: flex;\r\n  flex-direction: column;\r\n  justify-content: center;\r\n  align-items: center;  \r\n  background-repeat: no-repeat, repeat;\n}\nform[data-v-27b6205a] {\r\n  margin: 2rem 0;\r\n  display: flex;\r\n  flex-direction: column;\r\n  width: 100%;\r\n  /* height: 500px; */\n}\nform[data-v-27b6205a]:after {\r\n  content: '';\r\n  display: table;\r\n  clear: both;\n}\nform .field[data-v-27b6205a] {\r\n  display: block;\r\n  border: 1px solid #BDBDBD;\r\n  float: left;\r\n  width: 100%;\r\n  margin-bottom: 5px;\n}\nform .field label[data-v-27b6205a] {\r\n    display: block;\r\n    font-size: 1.2rem;\r\n    padding: 1.5rem 2rem 0.5rem;\r\n    text-transform: uppercase;\r\n    color: #999;\r\n    font-weight: 700;\r\n    letter-spacing: 1px;\r\n    background-color: white;\r\n    margin-bottom: 0;\n}\nform .field input[data-v-27b6205a],\r\nform .field textarea[data-v-27b6205a],\r\nform .field select[data-v-27b6205a] {\r\n  display: block;\r\n  width: 100%;\r\n  padding: .5rem 2rem 1.5rem;\r\n  font-size: 1rem;\r\n  border: 0;\r\n  color: #212121;\r\n  outline: 0;\n}\nform .field textarea[data-v-27b6205a] {\r\n  min-height: 150px;\r\n  resize: vertical;\n}\n.btn-interview[data-v-27b6205a]{\r\n    margin-top: 7px;\r\n    background-image: linear-gradient(45deg, #fa73d1 0%, #5b47ed 100%);\r\n    color: white;\n}\nli[data-v-27b6205a]{\r\n    display: flex;\r\n    align-items: center;\r\n    list-style-type: none;\r\n    border-bottom: 1px solid #999999;\n}\nform .field-li input[data-v-27b6205a]{\r\n    padding: 1rem 1.5rem 1rem 1rem;\n}\nform .field-li ul[data-v-27b6205a]{\r\n    -webkit-padding-end: 40px;\r\n            padding-inline-end: 40px;\n}\r\n", ""]);
 
 // exports
 
@@ -7116,6 +7305,25 @@ exports.push([module.i, "\n.header-backgorund[data-v-01f67e12]{\n     background
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.box span[data-v-1c1c8eac]{\n    height: 50px;\n    display: flex;\n    align-items: center;\n    width: 75px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/Interviews.vue?vue&type=style&index=0&id=abaea33e&scoped=true&lang=css&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/Interviews.vue?vue&type=style&index=0&id=abaea33e&scoped=true&lang=css& ***!
@@ -7128,7 +7336,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.wrapper-interview[data-v-abaea33e]{\r\n    padding-bottom: 30px\n}\n.interviews-tittle[data-v-abaea33e]{\r\n    padding-top: 30px;\r\n    padding-bottom: 30px;\r\n    color: #002a5b;\r\n    font-size: 42px;\n}\n.card[data-v-abaea33e]{\r\n    border-radius: 14px;\r\n    border: 0;\r\n    background: #fff;\r\n    margin-bottom: 1.5rem;\r\n    box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);\r\n    padding: 0 2rem 1.2rem;\n}\nspan.company-desc[data-v-abaea33e]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 18px;\r\n    font-weight: bold;\n}\nspan.company-name[data-v-abaea33e]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 32px;\r\n    font-weight: bold;\n}\n.card h2[data-v-abaea33e] {\r\n    color: #002a5b;\n}\n.card p[data-v-abaea33e]{\r\n    color: #002a5b;\n}\n.page-item[data-v-abaea33e]{\r\n    border-radius: 4px;\r\n    display: inline-block;\r\n\r\n    margin: 5px;\r\n    background: rgba(0,42,91,.08);\r\n    margin-bottom: 15px;\n}\n.page-link[data-v-abaea33e]{\r\n    font-size: 1.0rem;\r\n    color: #002a5b;\r\n    border-radius: 4px;\r\n    font-weight: 600;\r\n    line-height: 1.8;\r\n    background: 0 0;\r\n    border: 0;\r\n    outline: none !important;\n}\n.page-item a[data-v-abaea33e] {\n}\r\n", ""]);
+exports.push([module.i, "\n.wrapper-interview[data-v-abaea33e]{\r\n    padding-bottom: 30px\n}\n.interviews-tittle[data-v-abaea33e]{\r\n    padding-top: 30px;\r\n    padding-bottom: 30px;\r\n    color: #002a5b;\r\n    font-size: 42px;\n}\n.card[data-v-abaea33e]{\r\n    border-radius: 14px;\r\n    border: 0;\r\n    background: #fff;\r\n    margin-bottom: 1.5rem;\r\n    box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);\r\n    padding: 0 2rem 1.2rem;\n}\nspan.company-desc[data-v-abaea33e]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 18px;\r\n    font-weight: bold;\n}\nspan.company-name[data-v-abaea33e]{\r\n    display: inline;\r\n    color: #002a5b;\r\n    font-size: 32px;\r\n    font-weight: bold;\n}\n.card h2[data-v-abaea33e] {\r\n    color: #002a5b;\n}\n.card p[data-v-abaea33e]{\r\n    color: #002a5b;\n}\n.page-item[data-v-abaea33e]{\r\n    border-radius: 4px;\r\n    display: inline-block;\r\n\r\n    margin: 5px;\r\n    background: rgba(0,42,91,.08);\r\n    margin-bottom: 15px;\n}\n.page-link[data-v-abaea33e]{\r\n    font-size: 1.0rem;\r\n    color: #002a5b;\r\n    border-radius: 4px;\r\n    font-weight: 600;\r\n    line-height: 1.8;\r\n    background: 0 0;\r\n    border: 0;\r\n    outline: none !important;\n}\n.page-item a[data-v-abaea33e] {\n}\n.router_link[data-v-abaea33e]{\r\n    width: 155px\n}\r\n", ""]);
 
 // exports
 
@@ -38211,6 +38419,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/Interviews.vue?vue&type=style&index=0&id=abaea33e&scoped=true&lang=css&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/Interviews.vue?vue&type=style&index=0&id=abaea33e&scoped=true&lang=css& ***!
@@ -38843,9 +39081,19 @@ var render = function() {
   return _c("section", [
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-9" }, [_c("add-interview-form")], 1),
+        _c(
+          "div",
+          { staticClass: "col-md-9 col-12" },
+          [_c("add-interview-form")],
+          1
+        ),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [_c("add-interview-info")], 1)
+        _c(
+          "div",
+          { staticClass: "col-md-3 col-12 mb-4" },
+          [_c("add-interview-info")],
+          1
+        )
       ])
     ])
   ])
@@ -39038,7 +39286,22 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c(
+            "div",
+            { staticClass: "auth" },
+            [
+              _c("router-link", { attrs: { to: "/mulakatekle" } }, [
+                _c("a", { staticClass: "btn btn-mulakatim" }, [
+                  _vm._v("Mülakat Ekle")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("a", { staticClass: "blog", attrs: { href: "blog" } }, [
+                _vm._v("blog >")
+              ])
+            ],
+            1
+          )
         ],
         1
       )
@@ -39065,20 +39328,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "auth" }, [
-      _c("a", { staticClass: "btn btn-mulakatim" }, [
-        _vm._v("Giriş yap / Üye ol")
-      ]),
-      _vm._v(" "),
-      _c("a", { staticClass: "blog", attrs: { href: "blog" } }, [
-        _vm._v("blog >")
-      ])
-    ])
   }
 ]
 render._withStripped = true
@@ -39141,88 +39390,119 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c(
-      "div",
-      { staticClass: "wrapper-filtering-interview" },
-      [
-        _c("h2", { staticClass: "text-center filtering-interviews-tittle" }, [
-          _vm._v(_vm._s(this.$route.params.company) + " Mülakatları")
-        ]),
-        _vm._v(" "),
-        _vm._l(_vm.interviews, function(interview) {
-          return _c(
-            "div",
-            { key: interview.id, staticClass: "card card-body p-4" },
-            [
-              _c("h2", [
-                _c("span", { staticClass: "company-name" }, [
-                  _vm._v("Şirketin Adı:")
-                ]),
-                _vm._v(" " + _vm._s(interview.company_name))
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("p", [
-                _c("span", { staticClass: "company-desc" }, [
-                  _vm._v("Başvurulan İş:")
-                ]),
-                _vm._v(" " + _vm._s(interview.company_job))
-              ]),
-              _vm._v(" "),
-              _c("p", [
-                _c("span", { staticClass: "company-desc" }, [
-                  _vm._v("Şirket Mülakatı:")
-                ]),
-                _vm._v(" " + _vm._s(interview.company_interview))
-              ]),
-              _vm._v(" "),
-              _c("p", [
-                _c("span", { staticClass: "company-desc" }, [
-                  _vm._v("Şirketin Teklifi:")
-                ]),
-                _vm._v(
-                  " " + _vm._s(_vm.interviews_offer[interview.company_offer])
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      path: _vm.interviewLink,
-                      params: { id: interview.id }
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-mulakatim",
-                      on: {
-                        click: function($event) {
-                          return _vm.examineInterview(interview.id)
-                        }
-                      }
-                    },
-                    [_vm._v("İncele")]
+  return _c("div", { staticClass: "interview-wrapper" }, [
+    _c("div", { staticClass: "container" }, [
+      _c(
+        "div",
+        { staticClass: "wrapper-filtering-interview" },
+        [
+          _c("h2", { staticClass: "text-center filtering-interviews-tittle" }, [
+            _vm._v(
+              _vm._s(_vm._f("toCamelCase")(this.$route.params.company)) +
+                " Mülakatları"
+            )
+          ]),
+          _vm._v(" "),
+          _c("router-link", { attrs: { to: "/mulakatlar" } }, [
+            _c("button", { staticClass: "btn btn-mulakatim" }, [_vm._v("Geri")])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.interviews, function(interview) {
+            return _c(
+              "div",
+              { key: interview.id, staticClass: "card card-body p-4" },
+              [
+                _c("h2", [
+                  _c("span", { staticClass: "company-name" }, [
+                    _vm._v("Şirketin Adı:")
+                  ]),
+                  _vm._v(
+                    " " + _vm._s(_vm._f("toCamelCase")(interview.company_name))
                   )
-                ]
-              )
-            ],
-            1
-          )
-        }),
-        _vm._v(" "),
-        _c("router-link", { attrs: { to: "/mulakatlar" } }, [
-          _c("button", { staticClass: "btn btn-mulakatim" }, [_vm._v("Geri")])
-        ])
-      ],
-      2
-    )
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("p", [
+                  _c("span", { staticClass: "company-desc" }, [
+                    _vm._v("Başvurulan İş:")
+                  ]),
+                  _vm._v(
+                    " " + _vm._s(_vm._f("toCamelCase")(interview.company_job))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _c("span", { staticClass: "company-desc" }, [
+                    _vm._v("Şirket Mülakatı:")
+                  ]),
+                  _vm._v(
+                    " " +
+                      _vm._s(_vm._f("toCamelCase")(interview.company_interview))
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { style: { color: _vm.fontColor(interview.company_offer) } },
+                  [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "company-desc",
+                        style: { color: _vm.fontColor(interview.company_offer) }
+                      },
+                      [_vm._v("Şirketin Teklifi:")]
+                    ),
+                    _vm._v(
+                      " " +
+                        _vm._s(
+                          _vm._f("toCamelCase")(
+                            _vm.interviews_offer[interview.company_offer]
+                          )
+                        )
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "router_link",
+                    attrs: {
+                      to: {
+                        path: _vm.interviewLink,
+                        params: { id: interview.id }
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-mulakatim",
+                        on: {
+                          click: function($event) {
+                            return _vm.examineInterview(interview.id)
+                          }
+                        }
+                      },
+                      [_vm._v("İncele")]
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _c("router-link", { attrs: { to: "/mulakatlar" } }, [
+            _c("button", { staticClass: "btn btn-mulakatim" }, [_vm._v("Geri")])
+          ])
+        ],
+        2
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -39252,15 +39532,15 @@ var render = function() {
     [
       _c("home-announce"),
       _vm._v(" "),
-      _c("section", [_c("home-why")], 1),
+      _c("home-why"),
       _vm._v(" "),
       _c("section", [_c("home-background")], 1),
       _vm._v(" "),
       _c("section", [_c("home-numbers")], 1),
       _vm._v(" "),
-      _c("section", [_c("home-comment")], 1),
+      _c("home-comment"),
       _vm._v(" "),
-      _c("section", [_c("home-brand")], 1)
+      _c("home-brand")
     ],
     1
   )
@@ -39287,46 +39567,97 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("h2", { staticClass: "text-center filtering-interviews-tittle" }, [
-      _vm._v(
-        _vm._s(this.company_name) +
-          " şirketi " +
-          _vm._s(this.company_job) +
-          " mülakatı"
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card card-body p-4" }, [
-      _c("h2", [
-        _c("span", { staticClass: "company-name" }, [_vm._v("Şirketin Adı:")]),
-        _vm._v(" " + _vm._s(this.company_name))
-      ]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("p", [
-        _c("span", { staticClass: "company-desc" }, [_vm._v("Başvurulan İş:")]),
-        _vm._v(" " + _vm._s(this.company_job))
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _c("span", { staticClass: "company-desc" }, [
-          _vm._v("Şirket Mülakatı:")
+  return _c("div", { staticClass: "interview-wrapper" }, [
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _c("h2", { staticClass: "text-center filtering-interviews-tittle" }, [
+          _vm._v(
+            _vm._s(_vm._f("toCamelCase")(this.company_name)) +
+              " şirketi " +
+              _vm._s(_vm._f("toCamelCase")(this.company_job)) +
+              " mülakatı"
+          )
         ]),
-        _vm._v(" " + _vm._s(this.company_interview))
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _c("span", { staticClass: "company-desc" }, [
-          _vm._v("Şirketin Teklifi:")
+        _vm._v(" "),
+        _c("div", { staticClass: "card card-body p-4" }, [
+          _c("h2", [
+            _c("span", { staticClass: "company-name" }, [
+              _vm._v("Şirketin Adı:")
+            ]),
+            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_name)))
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("p", [
+            _c("span", { staticClass: "company-desc" }, [
+              _vm._v("Başvurulan İş:")
+            ]),
+            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_job)))
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _c("span", { staticClass: "company-desc" }, [
+              _vm._v("Şirket Mülakatı:")
+            ]),
+            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_interview)))
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              _vm._l(_vm.company_question, function(question, key) {
+                return _c("p", { key: key }, [
+                  _vm._v(
+                    _vm._s(key + 1) +
+                      " : " +
+                      _vm._s(_vm._f("toCamelCase")(question))
+                  )
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { style: { color: _vm.fontColor } }, [
+            _c(
+              "span",
+              { staticClass: "company-desc", style: { color: _vm.fontColor } },
+              [_vm._v("Şirketin Teklifi:")]
+            ),
+            _vm._v(
+              " " +
+                _vm._s(
+                  _vm._f("toCamelCase")(
+                    this.interviews_offer[this.company_offer]
+                  )
+                )
+            )
+          ])
         ]),
-        _vm._v(" " + _vm._s(this.interviews_offer[this.company_offer]))
-      ])
-    ])
+        _vm._v(" "),
+        _c("router-link", { attrs: { to: "/mulakatlar" } }, [
+          _c("button", { staticClass: "btn btn-mulakatim" }, [_vm._v("Geri")])
+        ])
+      ],
+      1
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("span", { staticClass: "company-desc" }, [_vm._v("Şirket Soruları:")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -39348,46 +39679,97 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("h2", { staticClass: "text-center filtering-interviews-tittle" }, [
-      _vm._v(
-        _vm._s(this.company_name) +
-          " şirketi " +
-          _vm._s(this.company_job) +
-          " mülakatı"
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card card-body p-4" }, [
-      _c("h2", [
-        _c("span", { staticClass: "company-name" }, [_vm._v("Şirketin Adı:")]),
-        _vm._v(" " + _vm._s(this.company_name))
-      ]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("p", [
-        _c("span", { staticClass: "company-desc" }, [_vm._v("Başvurulan İş:")]),
-        _vm._v(" " + _vm._s(this.company_job))
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _c("span", { staticClass: "company-desc" }, [
-          _vm._v("Şirket Mülakatı:")
+  return _c("div", { staticClass: "interview-wrapper" }, [
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _c("h2", { staticClass: "text-center filtering-interviews-tittle" }, [
+          _vm._v(
+            _vm._s(_vm._f("toCamelCase")(this.company_name)) +
+              " şirketi " +
+              _vm._s(_vm._f("toCamelCase")(this.company_job)) +
+              " mülakatı"
+          )
         ]),
-        _vm._v(" " + _vm._s(this.company_interview))
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _c("span", { staticClass: "company-desc" }, [
-          _vm._v("Şirketin Teklifi:")
+        _vm._v(" "),
+        _c("div", { staticClass: "card card-body p-4" }, [
+          _c("h2", [
+            _c("span", { staticClass: "company-name" }, [
+              _vm._v("Şirketin Adı:")
+            ]),
+            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_name)))
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("p", [
+            _c("span", { staticClass: "company-desc" }, [
+              _vm._v("Başvurulan İş:")
+            ]),
+            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_job)))
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _c("span", { staticClass: "company-desc" }, [
+              _vm._v("Şirket Mülakatı:")
+            ]),
+            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_interview)))
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              _vm._l(_vm.company_question, function(question, key) {
+                return _c("p", { key: key }, [
+                  _vm._v(
+                    _vm._s(key + 1) +
+                      " : " +
+                      _vm._s(_vm._f("toCamelCase")(question))
+                  )
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", { style: { color: _vm.fontColor } }, [
+            _c(
+              "span",
+              { staticClass: "company-desc", style: { color: _vm.fontColor } },
+              [_vm._v("Şirketin Teklifi:")]
+            ),
+            _vm._v(
+              " " +
+                _vm._s(
+                  _vm._f("toCamelCase")(
+                    this.interviews_offer[this.company_offer]
+                  )
+                )
+            )
+          ])
         ]),
-        _vm._v(" " + _vm._s(this.interviews_offer[this.company_offer]))
-      ])
-    ])
+        _vm._v(" "),
+        _c("router-link", { attrs: { to: "/mulakatlar" } }, [
+          _c("button", { staticClass: "btn btn-mulakatim" }, [_vm._v("Geri")])
+        ])
+      ],
+      1
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("span", { staticClass: "company-desc" }, [_vm._v("Şirket Soruları:")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -39505,6 +39887,64 @@ var render = function() {
               }
             }
           })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field-li field tnbp" }, [
+          _c("label", { attrs: { for: "company_question" } }, [
+            _vm._v("Şirketin Mülakat Soruları "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-success",
+                on: { click: _vm.newQuestion }
+              },
+              [_vm._v("soru ekle")]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "ul",
+            _vm._l(_vm.questions, function(question, index) {
+              return _c("li", { key: index }, [
+                _c("span", [_vm._v(_vm._s(index + 1) + "-")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: question.value,
+                      expression: "question.value"
+                    }
+                  ],
+                  attrs: { type: "text", name: "company_question" },
+                  domProps: { value: question.value },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(question, "value", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger",
+                    on: {
+                      click: function($event) {
+                        return _vm.questions.splice(index, 1)
+                      }
+                    }
+                  },
+                  [_vm._v("SİL")]
+                )
+              ])
+            }),
+            0
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "field tnb" }, [
@@ -39643,9 +40083,30 @@ var render = function() {
     [
       _c("h4", [_vm._v("Şirketlere göre mülakat ara")]),
       _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search_company,
+            expression: "search_company"
+          }
+        ],
+        attrs: { type: "text", placeholder: "şirket ara" },
+        domProps: { value: _vm.search_company },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.search_company = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
-      _vm._l(_vm.companyNames, function(companyName) {
+      _vm._l(_vm.filteredCompanies, function(companyName) {
         return _c(
           "div",
           { key: _vm.companyNames.id, staticClass: "category-list" },
@@ -39671,7 +40132,11 @@ var render = function() {
                       }
                     }
                   },
-                  [_vm._v(_vm._s(companyName.company_name))]
+                  [
+                    _vm._v(
+                      _vm._s(_vm._f("toCamelCase")(companyName.company_name))
+                    )
+                  ]
                 )
               ]
             )
@@ -39715,7 +40180,7 @@ var render = function() {
               { staticClass: "col-md-6" },
               [
                 _c("h1", { staticClass: "headline wow slideInLeft" }, [
-                  _vm._v("Mülakat mı arıyorsunuz ?")
+                  _vm._v("Mülakata mı Gireceksiniz ?")
                 ]),
                 _vm._v(" "),
                 _c("h4", { staticClass: "description" }, [
@@ -39835,7 +40300,7 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-2" }, [
+        _c("div", { staticClass: "col-md-2 col-6" }, [
           _c("div", { staticClass: "logo-wrapper" }, [
             _c("img", {
               staticClass: "brand-logo",
@@ -39844,7 +40309,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-2" }, [
+        _c("div", { staticClass: "col-md-2 col-6" }, [
           _c("div", { staticClass: "logo-wrapper" }, [
             _c("img", {
               staticClass: "brand-logo",
@@ -39853,7 +40318,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-2" }, [
+        _c("div", { staticClass: "col-md-2 col-6" }, [
           _c("div", { staticClass: "logo-wrapper" }, [
             _c("img", {
               staticClass: "brand-logo",
@@ -39862,7 +40327,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-2" }, [
+        _c("div", { staticClass: "col-md-2 col-6" }, [
           _c("div", { staticClass: "logo-wrapper" }, [
             _c("img", {
               staticClass: "brand-logo",
@@ -39871,7 +40336,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-2" }, [
+        _c("div", { staticClass: "col-md-2 col-6" }, [
           _c("div", { staticClass: "logo-wrapper" }, [
             _c("img", {
               staticClass: "brand-logo",
@@ -39880,7 +40345,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-2" }, [
+        _c("div", { staticClass: "col-md-2 col-6" }, [
           _c("div", { staticClass: "logo-wrapper" }, [
             _c("img", {
               staticClass: "brand-logo",
@@ -39990,10 +40455,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&":
-/*!*********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac& ***!
-  \*********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -40007,7 +40472,49 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "col-md-5" }, [
+        _c("h5", { staticClass: "headline headline-number" }, [
+          _vm._v("Sayılarla Biz")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-4 col-4" }, [
+            _c("div", { staticClass: "box box-color-1" }, [
+              _c("h4", { staticClass: "box-color-title-1" }, [
+                _vm._v(_vm._s(_vm.numberInterview))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-center" }, [
+                _vm._v("Gönderilen Mülakat")
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4 col-4" }, [
+            _c("div", { staticClass: "box box-color-2" }, [
+              _c("h4", { staticClass: "box-color-title-2" }, [
+                _vm._v(_vm._s(_vm.numberCompany.length))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-center" }, [
+                _vm._v("Başvurulan Şirket")
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-4 col-4" }, [
+            _c("div", { staticClass: "box box-color-3" }, [
+              _c("h4", { staticClass: "box-color-title-3" }, [
+                _vm._v(_vm._s(_vm.numberJob))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "text-center" }, [
+                _vm._v("Başvurulan İş")
+              ])
+            ])
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-7" }, [
         _c("img", {
@@ -40018,44 +40525,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-5" }, [
-      _c("h5", { staticClass: "headline headline-number" }, [
-        _vm._v("Sayılarla Biz")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "box box-color-1" }, [
-            _c("h4", { staticClass: "box-color-title-1" }, [_vm._v("560")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Mülakat")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "box box-color-2" }, [
-            _c("h4", { staticClass: "box-color-title-2" }, [_vm._v("560")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Mülakat")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "box box-color-3" }, [
-            _c("h4", { staticClass: "box-color-title-3" }, [_vm._v("560")]),
-            _vm._v(" "),
-            _c("span", [_vm._v("Mülakat")])
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -40084,7 +40554,7 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "col-md-3 col-sm-6 col-6" }, [
           _c("div", { staticClass: "whyColumn" }, [
             _c("img", {
               staticClass: "whyColumnImg",
@@ -40095,7 +40565,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "col-md-3 col-sm-6 col-6" }, [
           _c("div", { staticClass: "whyColumn" }, [
             _c("img", {
               staticClass: "whyColumnImg",
@@ -40106,7 +40576,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "col-md-3 col-sm-6 col-6" }, [
           _c("div", { staticClass: "whyColumn" }, [
             _c("img", {
               staticClass: "whyColumnImg",
@@ -40117,7 +40587,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "col-md-3 col-sm-6 col-6" }, [
           _c("div", { staticClass: "whyColumn" }, [
             _c("img", {
               staticClass: "whyColumnImg",
@@ -40246,7 +40716,10 @@ var render = function() {
                     _c("span", { staticClass: "company-name" }, [
                       _vm._v("Şirketin Adı:")
                     ]),
-                    _vm._v(" " + _vm._s(interview.company_name))
+                    _vm._v(
+                      " " +
+                        _vm._s(_vm._f("toCamelCase")(interview.company_name))
+                    )
                   ]),
                   _vm._v(" "),
                   _c("hr"),
@@ -40255,29 +40728,54 @@ var render = function() {
                     _c("span", { staticClass: "company-desc" }, [
                       _vm._v("Başvurulan İş:")
                     ]),
-                    _vm._v(" " + _vm._s(interview.company_job))
+                    _vm._v(
+                      " " + _vm._s(_vm._f("toCamelCase")(interview.company_job))
+                    )
                   ]),
                   _vm._v(" "),
                   _c("p", [
                     _c("span", { staticClass: "company-desc" }, [
                       _vm._v("Şirket Mülakatı:")
                     ]),
-                    _vm._v(" " + _vm._s(interview.company_interview))
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    _c("span", { staticClass: "company-desc" }, [
-                      _vm._v("Şirketin Teklifi:")
-                    ]),
                     _vm._v(
                       " " +
-                        _vm._s(_vm.interviews_offer[interview.company_offer])
+                        _vm._s(
+                          _vm._f("toCamelCase")(interview.company_interview)
+                        )
                     )
                   ]),
                   _vm._v(" "),
                   _c(
+                    "p",
+                    {
+                      style: { color: _vm.fontColor(interview.company_offer) }
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "company-desc",
+                          style: {
+                            color: _vm.fontColor(interview.company_offer)
+                          }
+                        },
+                        [_vm._v("Şirketin Teklifi:")]
+                      ),
+                      _vm._v(
+                        " " +
+                          _vm._s(
+                            _vm._f("toCamelCase")(
+                              _vm.interviews_offer[interview.company_offer]
+                            )
+                          )
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
                     "router-link",
                     {
+                      staticClass: "router_link",
                       attrs: {
                         to: {
                           path: _vm.interviewLink,
@@ -40296,7 +40794,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("İncele")]
+                        [_vm._v("Detaylı İncele")]
                       )
                     ]
                   )
@@ -55407,6 +55905,971 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/vuelidate/lib/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/vuelidate/lib/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Vuelidate = Vuelidate;
+Object.defineProperty(exports, "withParams", {
+  enumerable: true,
+  get: function get() {
+    return _params.withParams;
+  }
+});
+exports.default = exports.validationMixin = void 0;
+
+var _vval = __webpack_require__(/*! ./vval */ "./node_modules/vuelidate/lib/vval.js");
+
+var _params = __webpack_require__(/*! ./params */ "./node_modules/vuelidate/lib/params.js");
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var NIL = function NIL() {
+  return null;
+};
+
+var buildFromKeys = function buildFromKeys(keys, fn, keyFn) {
+  return keys.reduce(function (build, key) {
+    build[keyFn ? keyFn(key) : key] = fn(key);
+    return build;
+  }, {});
+};
+
+function isFunction(val) {
+  return typeof val === 'function';
+}
+
+function isObject(val) {
+  return val !== null && (_typeof(val) === 'object' || isFunction(val));
+}
+
+function isPromise(object) {
+  return isObject(object) && isFunction(object.then);
+}
+
+var getPath = function getPath(ctx, obj, path, fallback) {
+  if (typeof path === 'function') {
+    return path.call(ctx, obj, fallback);
+  }
+
+  path = Array.isArray(path) ? path : path.split('.');
+
+  for (var i = 0; i < path.length; i++) {
+    if (obj && _typeof(obj) === 'object') {
+      obj = obj[path[i]];
+    } else {
+      return fallback;
+    }
+  }
+
+  return typeof obj === 'undefined' ? fallback : obj;
+};
+
+var __isVuelidateAsyncVm = '__isVuelidateAsyncVm';
+
+function makePendingAsyncVm(Vue, promise) {
+  var asyncVm = new Vue({
+    data: {
+      p: true,
+      v: false
+    }
+  });
+  promise.then(function (value) {
+    asyncVm.p = false;
+    asyncVm.v = value;
+  }, function (error) {
+    asyncVm.p = false;
+    asyncVm.v = false;
+    throw error;
+  });
+  asyncVm[__isVuelidateAsyncVm] = true;
+  return asyncVm;
+}
+
+var validationGetters = {
+  $invalid: function $invalid() {
+    var _this = this;
+
+    var proxy = this.proxy;
+    return this.nestedKeys.some(function (nested) {
+      return _this.refProxy(nested).$invalid;
+    }) || this.ruleKeys.some(function (rule) {
+      return !proxy[rule];
+    });
+  },
+  $dirty: function $dirty() {
+    var _this2 = this;
+
+    if (this.dirty) {
+      return true;
+    }
+
+    if (this.nestedKeys.length === 0) {
+      return false;
+    }
+
+    return this.nestedKeys.every(function (key) {
+      return _this2.refProxy(key).$dirty;
+    });
+  },
+  $anyDirty: function $anyDirty() {
+    var _this3 = this;
+
+    if (this.dirty) {
+      return true;
+    }
+
+    if (this.nestedKeys.length === 0) {
+      return false;
+    }
+
+    return this.nestedKeys.some(function (key) {
+      return _this3.refProxy(key).$anyDirty;
+    });
+  },
+  $error: function $error() {
+    return this.$dirty && !this.$pending && this.$invalid;
+  },
+  $anyError: function $anyError() {
+    var _this4 = this;
+
+    if (this.$error) return true;
+    return this.nestedKeys.some(function (key) {
+      return _this4.refProxy(key).$anyError;
+    });
+  },
+  $pending: function $pending() {
+    var _this5 = this;
+
+    return this.ruleKeys.some(function (key) {
+      return _this5.getRef(key).$pending;
+    }) || this.nestedKeys.some(function (key) {
+      return _this5.refProxy(key).$pending;
+    });
+  },
+  $params: function $params() {
+    var _this6 = this;
+
+    var vals = this.validations;
+    return _objectSpread({}, buildFromKeys(this.nestedKeys, function (key) {
+      return vals[key] && vals[key].$params || null;
+    }), {}, buildFromKeys(this.ruleKeys, function (key) {
+      return _this6.getRef(key).$params;
+    }));
+  }
+};
+
+function setDirtyRecursive(newState) {
+  this.dirty = newState;
+  var proxy = this.proxy;
+  var method = newState ? '$touch' : '$reset';
+  this.nestedKeys.forEach(function (key) {
+    proxy[key][method]();
+  });
+}
+
+var validationMethods = {
+  $touch: function $touch() {
+    setDirtyRecursive.call(this, true);
+  },
+  $reset: function $reset() {
+    setDirtyRecursive.call(this, false);
+  },
+  $flattenParams: function $flattenParams() {
+    var proxy = this.proxy;
+    var params = [];
+
+    for (var key in this.$params) {
+      if (this.isNested(key)) {
+        var childParams = proxy[key].$flattenParams();
+
+        for (var j = 0; j < childParams.length; j++) {
+          childParams[j].path.unshift(key);
+        }
+
+        params = params.concat(childParams);
+      } else {
+        params.push({
+          path: [],
+          name: key,
+          params: this.$params[key]
+        });
+      }
+    }
+
+    return params;
+  }
+};
+var getterNames = Object.keys(validationGetters);
+var methodNames = Object.keys(validationMethods);
+var _cachedComponent = null;
+
+var getComponent = function getComponent(Vue) {
+  if (_cachedComponent) {
+    return _cachedComponent;
+  }
+
+  var VBase = Vue.extend({
+    computed: {
+      refs: function refs() {
+        var oldVval = this._vval;
+        this._vval = this.children;
+        (0, _vval.patchChildren)(oldVval, this._vval);
+        var refs = {};
+
+        this._vval.forEach(function (c) {
+          refs[c.key] = c.vm;
+        });
+
+        return refs;
+      }
+    },
+    beforeCreate: function beforeCreate() {
+      this._vval = null;
+    },
+    beforeDestroy: function beforeDestroy() {
+      if (this._vval) {
+        (0, _vval.patchChildren)(this._vval);
+        this._vval = null;
+      }
+    },
+    methods: {
+      getModel: function getModel() {
+        return this.lazyModel ? this.lazyModel(this.prop) : this.model;
+      },
+      getModelKey: function getModelKey(key) {
+        var model = this.getModel();
+
+        if (model) {
+          return model[key];
+        }
+      },
+      hasIter: function hasIter() {
+        return false;
+      }
+    }
+  });
+  var ValidationRule = VBase.extend({
+    data: function data() {
+      return {
+        rule: null,
+        lazyModel: null,
+        model: null,
+        lazyParentModel: null,
+        rootModel: null
+      };
+    },
+    methods: {
+      runRule: function runRule(parent) {
+        var model = this.getModel();
+        (0, _params.pushParams)();
+        var rawOutput = this.rule.call(this.rootModel, model, parent);
+        var output = isPromise(rawOutput) ? makePendingAsyncVm(Vue, rawOutput) : rawOutput;
+        var rawParams = (0, _params.popParams)();
+        var params = rawParams && rawParams.$sub ? rawParams.$sub.length > 1 ? rawParams : rawParams.$sub[0] : null;
+        return {
+          output: output,
+          params: params
+        };
+      }
+    },
+    computed: {
+      run: function run() {
+        var _this7 = this;
+
+        var parent = this.lazyParentModel();
+
+        var isArrayDependant = Array.isArray(parent) && parent.__ob__;
+
+        if (isArrayDependant) {
+          var arrayDep = parent.__ob__.dep;
+          arrayDep.depend();
+          var target = arrayDep.constructor.target;
+
+          if (!this._indirectWatcher) {
+            var Watcher = target.constructor;
+            this._indirectWatcher = new Watcher(this, function () {
+              return _this7.runRule(parent);
+            }, null, {
+              lazy: true
+            });
+          }
+
+          var model = this.getModel();
+
+          if (!this._indirectWatcher.dirty && this._lastModel === model) {
+            this._indirectWatcher.depend();
+
+            return target.value;
+          }
+
+          this._lastModel = model;
+
+          this._indirectWatcher.evaluate();
+
+          this._indirectWatcher.depend();
+        } else if (this._indirectWatcher) {
+          this._indirectWatcher.teardown();
+
+          this._indirectWatcher = null;
+        }
+
+        return this._indirectWatcher ? this._indirectWatcher.value : this.runRule(parent);
+      },
+      $params: function $params() {
+        return this.run.params;
+      },
+      proxy: function proxy() {
+        var output = this.run.output;
+
+        if (output[__isVuelidateAsyncVm]) {
+          return !!output.v;
+        }
+
+        return !!output;
+      },
+      $pending: function $pending() {
+        var output = this.run.output;
+
+        if (output[__isVuelidateAsyncVm]) {
+          return output.p;
+        }
+
+        return false;
+      }
+    },
+    destroyed: function destroyed() {
+      if (this._indirectWatcher) {
+        this._indirectWatcher.teardown();
+
+        this._indirectWatcher = null;
+      }
+    }
+  });
+  var Validation = VBase.extend({
+    data: function data() {
+      return {
+        dirty: false,
+        validations: null,
+        lazyModel: null,
+        model: null,
+        prop: null,
+        lazyParentModel: null,
+        rootModel: null
+      };
+    },
+    methods: _objectSpread({}, validationMethods, {
+      refProxy: function refProxy(key) {
+        return this.getRef(key).proxy;
+      },
+      getRef: function getRef(key) {
+        return this.refs[key];
+      },
+      isNested: function isNested(key) {
+        return typeof this.validations[key] !== 'function';
+      }
+    }),
+    computed: _objectSpread({}, validationGetters, {
+      nestedKeys: function nestedKeys() {
+        return this.keys.filter(this.isNested);
+      },
+      ruleKeys: function ruleKeys() {
+        var _this8 = this;
+
+        return this.keys.filter(function (k) {
+          return !_this8.isNested(k);
+        });
+      },
+      keys: function keys() {
+        return Object.keys(this.validations).filter(function (k) {
+          return k !== '$params';
+        });
+      },
+      proxy: function proxy() {
+        var _this9 = this;
+
+        var keyDefs = buildFromKeys(this.keys, function (key) {
+          return {
+            enumerable: true,
+            configurable: true,
+            get: function get() {
+              return _this9.refProxy(key);
+            }
+          };
+        });
+        var getterDefs = buildFromKeys(getterNames, function (key) {
+          return {
+            enumerable: true,
+            configurable: true,
+            get: function get() {
+              return _this9[key];
+            }
+          };
+        });
+        var methodDefs = buildFromKeys(methodNames, function (key) {
+          return {
+            enumerable: false,
+            configurable: true,
+            get: function get() {
+              return _this9[key];
+            }
+          };
+        });
+        var iterDefs = this.hasIter() ? {
+          $iter: {
+            enumerable: true,
+            value: Object.defineProperties({}, _objectSpread({}, keyDefs))
+          }
+        } : {};
+        return Object.defineProperties({}, _objectSpread({}, keyDefs, {}, iterDefs, {
+          $model: {
+            enumerable: true,
+            get: function get() {
+              var parent = _this9.lazyParentModel();
+
+              if (parent != null) {
+                return parent[_this9.prop];
+              } else {
+                return null;
+              }
+            },
+            set: function set(value) {
+              var parent = _this9.lazyParentModel();
+
+              if (parent != null) {
+                parent[_this9.prop] = value;
+
+                _this9.$touch();
+              }
+            }
+          }
+        }, getterDefs, {}, methodDefs));
+      },
+      children: function children() {
+        var _this10 = this;
+
+        return [].concat(_toConsumableArray(this.nestedKeys.map(function (key) {
+          return renderNested(_this10, key);
+        })), _toConsumableArray(this.ruleKeys.map(function (key) {
+          return renderRule(_this10, key);
+        }))).filter(Boolean);
+      }
+    })
+  });
+  var GroupValidation = Validation.extend({
+    methods: {
+      isNested: function isNested(key) {
+        return typeof this.validations[key]() !== 'undefined';
+      },
+      getRef: function getRef(key) {
+        var vm = this;
+        return {
+          get proxy() {
+            return vm.validations[key]() || false;
+          }
+
+        };
+      }
+    }
+  });
+  var EachValidation = Validation.extend({
+    computed: {
+      keys: function keys() {
+        var model = this.getModel();
+
+        if (isObject(model)) {
+          return Object.keys(model);
+        } else {
+          return [];
+        }
+      },
+      tracker: function tracker() {
+        var _this11 = this;
+
+        var trackBy = this.validations.$trackBy;
+        return trackBy ? function (key) {
+          return "".concat(getPath(_this11.rootModel, _this11.getModelKey(key), trackBy));
+        } : function (x) {
+          return "".concat(x);
+        };
+      },
+      getModelLazy: function getModelLazy() {
+        var _this12 = this;
+
+        return function () {
+          return _this12.getModel();
+        };
+      },
+      children: function children() {
+        var _this13 = this;
+
+        var def = this.validations;
+        var model = this.getModel();
+
+        var validations = _objectSpread({}, def);
+
+        delete validations['$trackBy'];
+        var usedTracks = {};
+        return this.keys.map(function (key) {
+          var track = _this13.tracker(key);
+
+          if (usedTracks.hasOwnProperty(track)) {
+            return null;
+          }
+
+          usedTracks[track] = true;
+          return (0, _vval.h)(Validation, track, {
+            validations: validations,
+            prop: key,
+            lazyParentModel: _this13.getModelLazy,
+            model: model[key],
+            rootModel: _this13.rootModel
+          });
+        }).filter(Boolean);
+      }
+    },
+    methods: {
+      isNested: function isNested() {
+        return true;
+      },
+      getRef: function getRef(key) {
+        return this.refs[this.tracker(key)];
+      },
+      hasIter: function hasIter() {
+        return true;
+      }
+    }
+  });
+
+  var renderNested = function renderNested(vm, key) {
+    if (key === '$each') {
+      return (0, _vval.h)(EachValidation, key, {
+        validations: vm.validations[key],
+        lazyParentModel: vm.lazyParentModel,
+        prop: key,
+        lazyModel: vm.getModel,
+        rootModel: vm.rootModel
+      });
+    }
+
+    var validations = vm.validations[key];
+
+    if (Array.isArray(validations)) {
+      var root = vm.rootModel;
+      var refVals = buildFromKeys(validations, function (path) {
+        return function () {
+          return getPath(root, root.$v, path);
+        };
+      }, function (v) {
+        return Array.isArray(v) ? v.join('.') : v;
+      });
+      return (0, _vval.h)(GroupValidation, key, {
+        validations: refVals,
+        lazyParentModel: NIL,
+        prop: key,
+        lazyModel: NIL,
+        rootModel: root
+      });
+    }
+
+    return (0, _vval.h)(Validation, key, {
+      validations: validations,
+      lazyParentModel: vm.getModel,
+      prop: key,
+      lazyModel: vm.getModelKey,
+      rootModel: vm.rootModel
+    });
+  };
+
+  var renderRule = function renderRule(vm, key) {
+    return (0, _vval.h)(ValidationRule, key, {
+      rule: vm.validations[key],
+      lazyParentModel: vm.lazyParentModel,
+      lazyModel: vm.getModel,
+      rootModel: vm.rootModel
+    });
+  };
+
+  _cachedComponent = {
+    VBase: VBase,
+    Validation: Validation
+  };
+  return _cachedComponent;
+};
+
+var _cachedVue = null;
+
+function getVue(rootVm) {
+  if (_cachedVue) return _cachedVue;
+  var Vue = rootVm.constructor;
+
+  while (Vue.super) {
+    Vue = Vue.super;
+  }
+
+  _cachedVue = Vue;
+  return Vue;
+}
+
+var validateModel = function validateModel(model, validations) {
+  var Vue = getVue(model);
+
+  var _getComponent = getComponent(Vue),
+      Validation = _getComponent.Validation,
+      VBase = _getComponent.VBase;
+
+  var root = new VBase({
+    computed: {
+      children: function children() {
+        var vals = typeof validations === 'function' ? validations.call(model) : validations;
+        return [(0, _vval.h)(Validation, '$v', {
+          validations: vals,
+          lazyParentModel: NIL,
+          prop: '$v',
+          model: model,
+          rootModel: model
+        })];
+      }
+    }
+  });
+  return root;
+};
+
+var validationMixin = {
+  data: function data() {
+    var vals = this.$options.validations;
+
+    if (vals) {
+      this._vuelidate = validateModel(this, vals);
+    }
+
+    return {};
+  },
+  beforeCreate: function beforeCreate() {
+    var options = this.$options;
+    var vals = options.validations;
+    if (!vals) return;
+    if (!options.computed) options.computed = {};
+    if (options.computed.$v) return;
+
+    options.computed.$v = function () {
+      return this._vuelidate ? this._vuelidate.refs.$v.proxy : null;
+    };
+  },
+  beforeDestroy: function beforeDestroy() {
+    if (this._vuelidate) {
+      this._vuelidate.$destroy();
+
+      this._vuelidate = null;
+    }
+  }
+};
+exports.validationMixin = validationMixin;
+
+function Vuelidate(Vue) {
+  Vue.mixin(validationMixin);
+}
+
+var _default = Vuelidate;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/vuelidate/lib/params.js":
+/*!**********************************************!*\
+  !*** ./node_modules/vuelidate/lib/params.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.pushParams = pushParams;
+exports.popParams = popParams;
+exports.withParams = withParams;
+exports._setTarget = exports.target = void 0;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var stack = [];
+var target = null;
+exports.target = target;
+
+var _setTarget = function _setTarget(x) {
+  exports.target = target = x;
+};
+
+exports._setTarget = _setTarget;
+
+function pushParams() {
+  if (target !== null) {
+    stack.push(target);
+  }
+
+  exports.target = target = {};
+}
+
+function popParams() {
+  var lastTarget = target;
+  var newTarget = exports.target = target = stack.pop() || null;
+
+  if (newTarget) {
+    if (!Array.isArray(newTarget.$sub)) {
+      newTarget.$sub = [];
+    }
+
+    newTarget.$sub.push(lastTarget);
+  }
+
+  return lastTarget;
+}
+
+function addParams(params) {
+  if (_typeof(params) === 'object' && !Array.isArray(params)) {
+    exports.target = target = _objectSpread({}, target, {}, params);
+  } else {
+    throw new Error('params must be an object');
+  }
+}
+
+function withParamsDirect(params, validator) {
+  return withParamsClosure(function (add) {
+    return function () {
+      add(params);
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return validator.apply(this, args);
+    };
+  });
+}
+
+function withParamsClosure(closure) {
+  var validator = closure(addParams);
+  return function () {
+    pushParams();
+
+    try {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return validator.apply(this, args);
+    } finally {
+      popParams();
+    }
+  };
+}
+
+function withParams(paramsOrClosure, maybeValidator) {
+  if (_typeof(paramsOrClosure) === 'object' && maybeValidator !== undefined) {
+    return withParamsDirect(paramsOrClosure, maybeValidator);
+  }
+
+  return withParamsClosure(paramsOrClosure);
+}
+
+/***/ }),
+
+/***/ "./node_modules/vuelidate/lib/vval.js":
+/*!********************************************!*\
+  !*** ./node_modules/vuelidate/lib/vval.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.patchChildren = patchChildren;
+exports.h = h;
+
+function isUndef(v) {
+  return v === null || v === undefined;
+}
+
+function isDef(v) {
+  return v !== null && v !== undefined;
+}
+
+function sameVval(oldVval, vval) {
+  return vval.tag === oldVval.tag && vval.key === oldVval.key;
+}
+
+function createVm(vval) {
+  var Vm = vval.tag;
+  vval.vm = new Vm({
+    data: vval.args
+  });
+}
+
+function updateVval(vval) {
+  var keys = Object.keys(vval.args);
+
+  for (var i = 0; i < keys.length; i++) {
+    keys.forEach(function (k) {
+      vval.vm[k] = vval.args[k];
+    });
+  }
+}
+
+function createKeyToOldIdx(children, beginIdx, endIdx) {
+  var i, key;
+  var map = {};
+
+  for (i = beginIdx; i <= endIdx; ++i) {
+    key = children[i].key;
+    if (isDef(key)) map[key] = i;
+  }
+
+  return map;
+}
+
+function updateChildren(oldCh, newCh) {
+  var oldStartIdx = 0;
+  var newStartIdx = 0;
+  var oldEndIdx = oldCh.length - 1;
+  var oldStartVval = oldCh[0];
+  var oldEndVval = oldCh[oldEndIdx];
+  var newEndIdx = newCh.length - 1;
+  var newStartVval = newCh[0];
+  var newEndVval = newCh[newEndIdx];
+  var oldKeyToIdx, idxInOld, elmToMove;
+
+  while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+    if (isUndef(oldStartVval)) {
+      oldStartVval = oldCh[++oldStartIdx];
+    } else if (isUndef(oldEndVval)) {
+      oldEndVval = oldCh[--oldEndIdx];
+    } else if (sameVval(oldStartVval, newStartVval)) {
+      patchVval(oldStartVval, newStartVval);
+      oldStartVval = oldCh[++oldStartIdx];
+      newStartVval = newCh[++newStartIdx];
+    } else if (sameVval(oldEndVval, newEndVval)) {
+      patchVval(oldEndVval, newEndVval);
+      oldEndVval = oldCh[--oldEndIdx];
+      newEndVval = newCh[--newEndIdx];
+    } else if (sameVval(oldStartVval, newEndVval)) {
+      patchVval(oldStartVval, newEndVval);
+      oldStartVval = oldCh[++oldStartIdx];
+      newEndVval = newCh[--newEndIdx];
+    } else if (sameVval(oldEndVval, newStartVval)) {
+      patchVval(oldEndVval, newStartVval);
+      oldEndVval = oldCh[--oldEndIdx];
+      newStartVval = newCh[++newStartIdx];
+    } else {
+      if (isUndef(oldKeyToIdx)) oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx);
+      idxInOld = isDef(newStartVval.key) ? oldKeyToIdx[newStartVval.key] : null;
+
+      if (isUndef(idxInOld)) {
+        createVm(newStartVval);
+        newStartVval = newCh[++newStartIdx];
+      } else {
+        elmToMove = oldCh[idxInOld];
+
+        if (sameVval(elmToMove, newStartVval)) {
+          patchVval(elmToMove, newStartVval);
+          oldCh[idxInOld] = undefined;
+          newStartVval = newCh[++newStartIdx];
+        } else {
+          createVm(newStartVval);
+          newStartVval = newCh[++newStartIdx];
+        }
+      }
+    }
+  }
+
+  if (oldStartIdx > oldEndIdx) {
+    addVvals(newCh, newStartIdx, newEndIdx);
+  } else if (newStartIdx > newEndIdx) {
+    removeVvals(oldCh, oldStartIdx, oldEndIdx);
+  }
+}
+
+function addVvals(vvals, startIdx, endIdx) {
+  for (; startIdx <= endIdx; ++startIdx) {
+    createVm(vvals[startIdx]);
+  }
+}
+
+function removeVvals(vvals, startIdx, endIdx) {
+  for (; startIdx <= endIdx; ++startIdx) {
+    var ch = vvals[startIdx];
+
+    if (isDef(ch)) {
+      ch.vm.$destroy();
+      ch.vm = null;
+    }
+  }
+}
+
+function patchVval(oldVval, vval) {
+  if (oldVval === vval) {
+    return;
+  }
+
+  vval.vm = oldVval.vm;
+  updateVval(vval);
+}
+
+function patchChildren(oldCh, ch) {
+  if (isDef(oldCh) && isDef(ch)) {
+    if (oldCh !== ch) updateChildren(oldCh, ch);
+  } else if (isDef(ch)) {
+    addVvals(ch, 0, ch.length - 1);
+  } else if (isDef(oldCh)) {
+    removeVvals(oldCh, 0, oldCh.length - 1);
+  }
+}
+
+function h(tag, key, args) {
+  return {
+    tag: tag,
+    key: key,
+    args: args
+  };
+}
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -55482,6 +56945,8 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -55499,6 +56964,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  */
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
 
 
  //Shared
@@ -55525,6 +56991,20 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_1__["routes"] // mode: "history"
 
+});
+Vue.use(vuelidate__WEBPACK_IMPORTED_MODULE_2___default.a); // First Letter Capitalize all word
+
+Vue.filter("toCamelCase", function (value) {
+  var value = value.toLowerCase().split(' ');
+
+  for (var i = 0; i < value.length; i++) {
+    // You do not need to check if i is larger than value length, as your for does that for you
+    // Assign it back to the array
+    value[i] = value[i].charAt(0).toUpperCase() + value[i].slice(1);
+  } // Directly return the joined string
+
+
+  return value.join(' ');
 });
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -56660,21 +58140,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _HomeNumbers_vue_vue_type_template_id_1c1c8eac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HomeNumbers.vue?vue&type=template&id=1c1c8eac& */ "./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _HomeNumbers_vue_vue_type_template_id_1c1c8eac_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true& */ "./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true&");
+/* harmony import */ var _HomeNumbers_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HomeNumbers.vue?vue&type=script&lang=js& */ "./resources/js/components/shared/HomeNumbers.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css& */ "./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
-  _HomeNumbers_vue_vue_type_template_id_1c1c8eac___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _HomeNumbers_vue_vue_type_template_id_1c1c8eac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _HomeNumbers_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HomeNumbers_vue_vue_type_template_id_1c1c8eac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HomeNumbers_vue_vue_type_template_id_1c1c8eac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "1c1c8eac",
   null
   
 )
@@ -56686,19 +58170,49 @@ component.options.__file = "resources/js/components/shared/HomeNumbers.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&":
-/*!***************************************************************************************!*\
-  !*** ./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac& ***!
-  \***************************************************************************************/
+/***/ "./resources/js/components/shared/HomeNumbers.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/shared/HomeNumbers.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeNumbers.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=style&index=0&id=1c1c8eac&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_style_index_0_id_1c1c8eac_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true& ***!
+  \***************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_template_id_1c1c8eac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeNumbers.vue?vue&type=template&id=1c1c8eac& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_template_id_1c1c8eac___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_template_id_1c1c8eac_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/HomeNumbers.vue?vue&type=template&id=1c1c8eac&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_template_id_1c1c8eac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_template_id_1c1c8eac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeNumbers_vue_vue_type_template_id_1c1c8eac_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -56879,8 +58393,7 @@ var routes = [{
 }, {
   path: '/mulakatlar/:company',
   component: _components_pages_FilteredInterview_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
-} // {path: '/isler/:job' , component: jobfilteringInterview}
-];
+}];
 
 /***/ }),
 

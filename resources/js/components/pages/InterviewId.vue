@@ -1,15 +1,26 @@
 <template>
+<div class="interview-wrapper">
     <div class="container">
-        <h2 class="text-center filtering-interviews-tittle">{{this.company_name}} şirketi {{this.company_job}} mülakatı</h2>
+        <h2 class="text-center filtering-interviews-tittle">{{this.company_name | toCamelCase}} şirketi {{this.company_job | toCamelCase}} mülakatı</h2>
      <div class="card card-body p-4">
         <!-- <h2>{{ interview.id }}</h2> -->
-        <h2> <span class="company-name">Şirketin Adı:</span> {{ this.company_name }}</h2>
+        <h2> <span class="company-name">Şirketin Adı:</span> {{ this.company_name | toCamelCase}}</h2>
         <hr>
-        <p> <span class="company-desc">Başvurulan İş:</span> {{ this.company_job }}</p>
-        <p> <span class="company-desc">Şirket Mülakatı:</span> {{ this.company_interview }}</p>
-        <p> <span class="company-desc">Şirketin Teklifi:</span> {{ this.interviews_offer[this.company_offer] }}</p>
+        <p> <span class="company-desc">Başvurulan İş:</span> {{ this.company_job  | toCamelCase}}</p>
+        <p> <span class="company-desc">Şirket Mülakatı:</span> {{ this.company_interview  | toCamelCase}}</p>
+        <div>
+        <p> <span class="company-desc">Şirket Soruları:</span></p>
+            <div>
+                <p v-for="(question,key) in company_question" :key="key">{{key+1}} : {{ question | toCamelCase}}</p>
+            </div>
+        </div>
+        <p :style="{color : fontColor}" > <span :style="{color : fontColor}"  class="company-desc">Şirketin Teklifi:</span> {{ this.interviews_offer[this.company_offer] | toCamelCase}}</p>
      </div>
+        <router-link to="/mulakatlar">
+            <button class="btn btn-mulakatim">Geri</button>   
+        </router-link> 
     </div>
+</div>
 </template>
 <script>
 export default {
@@ -19,9 +30,9 @@ export default {
             company_name: '',
             company_interview: '',
             company_job: '',
+            company_question: [],
             company_offer: '',
             interviews_offer :["Teklif yapıldı","Teklif Yapılmadı","Mülakat Yakın Zamanda Gerçekleşti"],
-
         }
     },
     created(){
@@ -38,9 +49,24 @@ export default {
                     this.company_interview = res.company_interview
                     this.company_job = res.company_job
                     this.company_offer = res.company_offer
+                    this.company_question = res.company_questions.split("+")
+                    this.company_question.pop() // sondaki + yüzünden bir boş eleman silme kodu
                 })
         },
-}
+    },
+    computed : {
+        fontColor(){
+            if(this.company_offer == 0){
+                return "green"
+            }
+            else if(this.company_offer == 1){
+                return "red"
+            }
+            else if(this.company_offer == 2){
+                return "orange"
+            }
+        }
+    }
 }
 </script>
 <style scoped>

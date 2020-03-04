@@ -43,3 +43,10 @@ Route::put('mulakat', 'InterviewController@store');
 
 //Delete interview
 Route::delete('mulakat', 'InterviewController@destroy');
+
+
+
+//number of interviews
+Route::get('NumberInterview', 'InterviewController@NumberInterview');
+//number of jobs
+Route::get('NumberJob', 'InterviewController@NumberJob');

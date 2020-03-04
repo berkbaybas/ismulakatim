@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Interview;
 use App\Http\Resources\Interview as InterviewResource;
@@ -35,6 +36,15 @@ class InterviewController extends Controller
 
         return InterviewResource::collection($interview);
     }
+    public function NumberInterview()
+    {
+        return DB::table('interviews')->count();
+    }
+    public function NumberJob()
+    {
+        return DB::table('interviews')->select()->distinct()->count('company_job');
+    }
+    
 
  
 
@@ -64,6 +74,7 @@ class InterviewController extends Controller
         $interview->company_name = $request->input('company_name');
         $interview->company_job = $request->input('company_job');
         $interview->company_interview = $request->input('company_interview');
+        $interview->company_questions = $request->input('company_questions');
         $interview->company_offer = $request->input('company_offer');
 
 

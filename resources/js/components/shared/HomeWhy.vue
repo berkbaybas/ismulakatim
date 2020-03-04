@@ -3,7 +3,7 @@
         <h2 class="text-center section-title headline">Neden İş Mülakatım</h2>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-sm-6 col-6">
                         <div class="whyColumn">
                             <img class="whyColumnImg" :src="'images/interview.png'" alt="">
                             <div>
@@ -14,7 +14,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-sm-6 col-6">
                         <div class="whyColumn">
                             <img class="whyColumnImg" :src="'images/conversation.png'" alt="">
                             <div>
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-sm-6 col-6">
                         <div class="whyColumn">
                             <img class="whyColumnImg" :src="'images/complaint.png'" alt="">
                             <div>
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-sm-6 col-6">
                         <div class="whyColumn">
                             <img class="whyColumnImg" :src="'images/friendship.png'" alt="">
                             <div>

@@ -6,13 +6,13 @@
             <div class="col-sm-6" v-for="interview in interviews" v-bind:key="interview.id">
                 <div class="card card-body p-4">
                     <!-- <h2>{{ interview.id }}</h2> -->
-                    <h2> <span class="company-name">Şirketin Adı:</span> {{ interview.company_name }}</h2>
+                    <h2> <span class="company-name">Şirketin Adı:</span> {{ interview.company_name | toCamelCase}}</h2>
                     <hr>
-                    <p> <span class="company-desc">Başvurulan İş:</span> {{ interview.company_job }}</p>
-                    <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview }}</p>
-                    <p> <span class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] }}</p>
-                   <router-link :to="{path: interviewLink, params: {id: interview.id } }">
-                    <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">İncele</button>   
+                    <p> <span class="company-desc">Başvurulan İş:</span> {{ interview.company_job | toCamelCase}}</p>
+                    <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview | toCamelCase}}</p>
+                    <p :style="{color : fontColor(interview.company_offer)}" > <span :style="{color : fontColor(interview.company_offer)}" class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] | toCamelCase}}</p>
+                    <router-link class="router_link" :to="{path: interviewLink, params: {id: interview.id } }">
+                    <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">Detaylı İncele</button>   
                     </router-link> 
                 </div>
             </div>
@@ -35,14 +35,16 @@ export default {
     data(){
         return{
             interviews: [],
-            interview : {
-                id: '',
-                company_name: '',
-                company_job: '',
-                company_interview: '',
-                company_offer: ''
-            },
+            // interview : {
+            //     id: '',
+            //     company_name: '',
+            //     company_job: '',
+            //     company_interview: '',
+            //     company_questions: '',
+            //     company_offer: ''
+            // },
             interviews_offer :["Teklif yapıldı","Teklif Yapılmadı","Mülakat Yakın Zamanda Gerçekleşti"],
+            // interviews_quest : [],
             pagination: {},
             edit: false,
             id: '' // mülakat id sini çekmek için
@@ -58,8 +60,10 @@ export default {
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {   
+                    console.log(res.data);
+                    
                     this.interviews = res.data
-                   // this.interviews.company_interview = this.interviews.company_interview.slice(0,10)
+                    // this.interviews_quest = res.data.company_interview.split("+")
                     vm.makePagination(res.meta, res.links);
                 })
                 .catch(err => console.log(err)
@@ -76,12 +80,24 @@ export default {
                 prev_page_url : links.prev
             }
             this.pagination = pagination;
+        },
+        fontColor(value){
+            if(value == 0){     
+                return "green"
+            }
+            else if(value == 1){
+                return "red"
+            }
+            else if(value == 2){
+                return "orange"
+            }
         }
     },
     computed : {
         interviewLink(){
             return `/mulakat/${this.id}`
-        }
+        },
+ 
     }
 }
 </script>
@@ -145,5 +161,8 @@ span.company-name{
 .page-item a {
     
     
+}
+.router_link{
+    width: 155px
 }
 </style>

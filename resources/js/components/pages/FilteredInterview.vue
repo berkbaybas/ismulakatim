@@ -1,22 +1,27 @@
 <template>
-<div class="container">
-<div class="wrapper-filtering-interview">
-    <h2 class="text-center filtering-interviews-tittle">{{this.$route.params.company}} Mülakatları</h2>
-        <div class="card card-body p-4"  v-for="interview in interviews" v-bind:key="interview.id">
-                    <!-- <h2>{{ interview.id }}</h2> -->
-                    <h2> <span class="company-name">Şirketin Adı:</span> {{ interview.company_name }}</h2>
-                    <hr>
-                    <p> <span class="company-desc">Başvurulan İş:</span> {{ interview.company_job }}</p>
-                    <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview }}</p>
-                    <p> <span class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] }}</p>
-                   <router-link :to="{path: interviewLink, params: {id: interview.id } }">
-                    <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">İncele</button>   
-                    </router-link> 
+<div class="interview-wrapper">
+    <div class="container">
+        <div class="wrapper-filtering-interview">
+            <h2 class="text-center filtering-interviews-tittle">{{this.$route.params.company | toCamelCase}} Mülakatları</h2>
+               <router-link to="/mulakatlar">
+                    <button class="btn btn-mulakatim">Geri</button>   
+                </router-link> 
+                <div class="card card-body p-4"  v-for="interview in interviews" v-bind:key="interview.id">
+                            <!-- <h2>{{ interview.id }}</h2> -->
+                            <h2> <span class="company-name">Şirketin Adı:</span> {{ interview.company_name | toCamelCase}}</h2>
+                            <hr>
+                            <p> <span class="company-desc">Başvurulan İş:</span> {{ interview.company_job | toCamelCase}}</p>
+                            <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview | toCamelCase}}</p>
+                            <p :style="{color : fontColor(interview.company_offer)}" > <span :style="{color : fontColor(interview.company_offer)}" class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] | toCamelCase}}</p>
+                            <router-link class="router_link" :to="{path: interviewLink, params: {id: interview.id } }">
+                                <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">İncele</button>   
+                            </router-link> 
+                </div>
+                <router-link to="/mulakatlar">
+                    <button class="btn btn-mulakatim">Geri</button>   
+                </router-link> 
         </div>
-        <router-link to="/mulakatlar">
-            <button class="btn btn-mulakatim">Geri</button>   
-        </router-link> 
-</div>
+    </div>
 </div>
 </template>
 <script>
@@ -29,18 +34,29 @@ export default {
         }
     },
     methods: {
-          examineInterview(id){
-           this.id = id // mülakat id sini çekmek için
-        }
+        examineInterview(id){
+            this.id = id // mülakat id sini çekmek için
+            },
+        fontColor(value){
+            if(value == 0){     
+                return "green"
+            }
+            else if(value == 1){
+                return "red"
+            }
+            else if(value == 2){
+                return "orange"
+            }
+    }
     },
     created(){
-            fetch(`api/mulakatlar/${this.$route.params.company}`)
-                .then(res => res.json())
-                .then(res => {
-                   this.interviews = res.data;
-                   console.log(this.interviews);
-                   
-                })
+        fetch(`api/mulakatlar/${this.$route.params.company}`)
+            .then(res => res.json())
+            .then(res => {
+               this.interviews = res.data;
+               console.log(this.interviews);
+               
+            })
     },
      computed : {
         interviewLink(){
@@ -51,6 +67,9 @@ export default {
 }
 </script>
 <style  scoped>
+body{
+    background: rgb(241, 245, 248);
+}
 .filtering-interviews-tittle{
     padding-top: 30px;
     padding-bottom: 30px;
@@ -65,6 +84,7 @@ export default {
     border: 0;
     background: #fff;
     margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
     box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);
     padding: 0 2rem 1.2rem;
 }
@@ -85,5 +105,8 @@ span.company-name{
 }
 .card p{
     color: #002a5b;
+}
+.router_link{
+    width: 155px;
 }
 </style>

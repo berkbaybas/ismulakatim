@@ -5,7 +5,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 class="headline wow slideInLeft">Mülakat mı arıyorsunuz ?</h1>
+                        <h1 class="headline wow slideInLeft">Mülakata mı Gireceksiniz ?</h1>
                         <h4 class="description">Sizde hemen gireceğiniz mülakatlar hakkında gerçek insanlardan mülakatları hakkında kayda değer bilgileri öğrenin veya girdiğiniz mülakat detaylarını paylaşın.</h4>
                         <router-link to="/mulakatekle"><a class="btn btn-mulakatim">Mülakat Ekle</a></router-link>
                      
