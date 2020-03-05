@@ -3,29 +3,36 @@
     <h1 class="text-center">Mülakatınız</h1>
       <form @submit.prevent="addInterview" class="mb-3">
         <div class="field tnb">
-            <label for="company_name">Şirketin İsmi</label>
+            <label for="company_name">Şirketin İsmİ</label>
             <input
+                @input="$v.interview.company_name.$touch()"
                 type="company_name" 
                 class="" 
                 v-model="interview.company_name">
+        <small v-if="!$v.interview.company_name.required" class="text-danger">Bu alan zorunludur.</small>
         </div>
            <div class="field tnb">
             <label for="company_job">Başvurulan İş</label>
             <input
+                @input="$v.interview.company_job.$touch()"
                 type="company_job" 
                 class="" 
                 v-model="interview.company_job">
+            <small v-if="!$v.interview.company_job.required" class="text-danger">Bu alan zorunludur.</small>
         </div>
         <div class="field tnbp">
             <label for="interview">Mülakatınız</label>
             <textarea
+                @textarea="$v.interview.company_interview.$touch()"
                 name="interview"
                 class="" 
                 v-model="interview.company_interview" />
+        <small v-if="!$v.interview.company_interview.required" class="text-danger">Bu alan zorunludur.</small>
+        <small v-if="!$v.interview.company_interview.minLength" class="text-danger">Mülakatınız en az 120 karakter olmalıdır.</small>
+
         </div>
         <div class="field-li field tnbp">
-            <label for="company_question">Şirketin Mülakat Soruları <a @click="newQuestion" class="btn btn-success">soru ekle</a></label>
-            
+            <label for="company_question">Şİrketİn Mülakat Soruları <a @click="newQuestion" class="btn btn-success">soru ekle</a></label>
             <ul>
                 <li
                 v-for="(question,index) in questions" :key="index"
@@ -35,22 +42,30 @@
                 type="text"
                 name="company_question"
                 v-model="question.value"> 
-                <button @click="questions.splice(index,1)" class="btn btn-danger">SİL</button></li>
+                <button @click="questions.pop(index,1)" class="btn btn-danger">SİL</button></li>
             </ul>
-            <!-- {{questions}} -->
+            <small class="text-success">Bu alan zorunlu değildir. Dilerseniz soru ekle kısmı ile istediğiniz kadar soru ekleyebilirsiniz.</small>
         </div>
          <div class="field tnb">
-            <label for="offer">Teklif</label>
-            <select name="offer" class="" v-model="interview.company_offer" @change="selected()">
+            <label for="offer">Teklİf</label>
+            <select 
+               @select="$v.interview.company_offer.$touch()"
+               name="offer" 
+               class="" 
+               v-model="interview.company_offer" 
+               @change="selected()">
                 <option  v-for="offer in offers" :value="offer">{{ offer }}</option>
             </select>
+            <small v-if="!$v.interview.company_offer.required" class="text-danger">Bu alan zorunludur.</small>
+
         </div>
-        <button type="submit" class="btn btn-light btn-interview text-center">Gönder</button>
+        <button :disabled="$v.$invalid" type="submit" class="btn btn-interview text-center">Gönder</button>
     </form>
    
 </div>
 </template>
 <script>
+import {required, minLength} from 'vuelidate/lib/validators'
 export default {
     data(){
         return{
@@ -66,6 +81,26 @@ export default {
             offers: ["Teklif yapıldı","Teklif Yapılmadı","Mülakat Yakın Zamanda Gerçekleşti"],
             offerIndex:'',
             questions : []
+        }
+    },
+    validations: {
+        interview: {
+            company_name : {
+                required
+            },
+            company_job : {
+                required
+            },
+            company_job : {
+                required
+            },
+            company_interview : {
+                required,
+                minLength : minLength(120)
+            },
+            company_offer : {
+                required
+            }
         }
     },
     methods:{
@@ -168,7 +203,7 @@ form .field textarea {
 }
 .btn-interview{
     margin-top: 7px;
-    background-image: linear-gradient(45deg, #fa73d1 0%, #5b47ed 100%);
+    background-image: linear-gradient(45deg, #b15fde 0%, #5c47ed 100%);
     color: white;
 }
 li{
@@ -183,5 +218,12 @@ form .field-li input{
 }
 form .field-li ul{
     padding-inline-end: 40px;
+}
+.btn-success:hover{
+    color: #fff;
+    background-color: #0cf33f;
+}
+.btn:disabled{
+    cursor: not-allowed
 }
 </style>

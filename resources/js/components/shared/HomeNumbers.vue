@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-md-4 col-4">
                         <div class="box box-color-1">
-                            <h4 class="box-color-title-1">{{numberInterview}}</h4>
+                            <h4 class="box-color-title-1 counter">{{numberInterview}}</h4>
                             <span class="text-center">Gönderilen Mülakat</span>
                         </div>
                     </div>
@@ -34,9 +34,9 @@
 export default {
     data(){
         return{
-            numberInterview : '',
-            numberCompany : '',
-            numberJob : ''
+            numberInterview : 0,
+            numberCompany : 0,
+            numberJob : 0
         }
     },
     created(){
@@ -56,6 +56,7 @@ export default {
                this.numberJob = res
 
           })       
+          
     }
 }
 </script>

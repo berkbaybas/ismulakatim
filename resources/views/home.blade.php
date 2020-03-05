@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ URL::asset('css/normalize.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/home.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/home-mobile.css') }}">
 </head>
@@ -17,7 +16,9 @@
 <div id="app">
     <app-header></app-header>
     
-    <router-view></router-view>
+ 
+        <router-view class="wow fadeIn data-wow-duration='2s'"></router-view>
+    
     {{-- <home></home> --}}
     
     <app-footer></app-footer>
@@ -33,9 +34,6 @@
     <script src="{{ URL::asset('js/wow.js') }}"></script>
     <script>
     new WOW().init();
-    </script>
-    <script>
-        // homepage counter effect
     </script>
 </body>
 </html>

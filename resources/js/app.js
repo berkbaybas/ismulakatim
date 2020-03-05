@@ -23,8 +23,6 @@ import VueRouter from "vue-router"
 import { routes } from "./routes"
 import Vuelidate from 'vuelidate'
 
-
-
 //Shared
 Vue.component('home-announce', require('./components/shared/HomeAnnounce.vue').default)
 Vue.component('home-why', require('./components/shared/HomeWhy.vue').default)
@@ -50,7 +48,10 @@ Vue.component('interview-id', require('./components/pages/InterviewId.vue').defa
 
 Vue.use(VueRouter);
 const router = new VueRouter({
-    routes,
+     routes,
+     scrollBehavior(to, from, savedPosition){
+         return {x : 0, y : 0}
+     }
     // mode: "history"
 })
 
@@ -70,6 +71,12 @@ Vue.filter("toCamelCase" , (value) => {
     return value.join(' '); 
 })
 
+
+// 10 word view for interviews and filteredInterview components
+Vue.filter("toCutInterview" , (value) => {
+    var value = value.substring(0,20);
+    return value
+})
 
 
 /**

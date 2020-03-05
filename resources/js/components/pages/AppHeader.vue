@@ -2,7 +2,8 @@
 <header>
     <div class="container">
         <nav class="menu navbar navbar-expand-lg navbar-light">
-            <router-link to="/"
+            <router-link 
+                to="/"
             ><a class="navbar-brand">işmülakatım.com</a></router-link>
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +11,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <router-link to="/mulakatlar"  
+                    <router-link 
+                        to="/mulakatlar"
+                        active-class="active"
+                        exact  
                     ><a class="nav-item nav-link">Şirketler</a></router-link>
                     
                     <a class="nav-item nav-link" href="isler">İşler</a>
@@ -23,7 +27,8 @@
                 </form>
             </div>
             <div class="auth">
-                <router-link to="/mulakatekle"  
+                <router-link 
+                    to="/mulakatekle"  
                 ><a class="btn btn-mulakatim">Mülakat Ekle</a></router-link>
                 
                 <a class="blog" href="blog">blog ></a>

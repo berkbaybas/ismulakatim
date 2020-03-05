@@ -1,32 +1,32 @@
 <template>
-<div class="interview-wrapper">
-    <div class="container">
-        <h2 class="text-center filtering-interviews-tittle">{{this.company_name | toCamelCase}} şirketi {{this.company_job | toCamelCase}} mülakatı</h2>
-     <div class="card card-body p-4">
-        <!-- <h2>{{ interview.id }}</h2> -->
-        <h2> <span class="company-name">Şirketin Adı:</span> {{ this.company_name | toCamelCase}}</h2>
-        <hr>
-        <p> <span class="company-desc">Başvurulan İş:</span> {{ this.company_job  | toCamelCase}}</p>
-        <p> <span class="company-desc">Şirket Mülakatı:</span> {{ this.company_interview  | toCamelCase}}</p>
-        <div>
-        <p> <span class="company-desc">Şirket Soruları:</span></p>
+    <div class="interview-wrapper">
+        <div class="container">
+            <h2 class="text-center filtering-interviews-tittle">{{this.company_name | toCamelCase}} şirketi {{this.company_job | toCamelCase}} mülakatı</h2>
+        <div class="card card-body p-4">
+            <!-- <h2>{{ interview.id }}</h2> -->
+            <h2> <span class="company-name">Şirketin Adı:</span> {{ this.company_name | toCamelCase}}</h2>
+            <hr>
+            <p> <span class="company-desc">Başvurulan İş:</span> {{ this.company_job  | toCamelCase}}</p>
+            <p> <span class="company-desc">Şirket Mülakatı:</span> {{ this.company_interview  | toCamelCase}}</p>
             <div>
-                <p v-for="(question,key) in company_question" :key="key">{{key+1}} : {{ question | toCamelCase}}</p>
+            <p> <span class="company-desc">Şirket Soruları:</span></p>
+                <div>
+                    <p v-for="(question,key) in company_question" :key="key">{{key+1}} : {{ question | toCamelCase}} ?</p>
+                </div>
             </div>
+            <p :style="{color : fontColor}" > <span :style="{color : fontColor}"  class="company-desc">Şirketin Teklifi:</span> {{ this.interviews_offer[this.company_offer] | toCamelCase}}</p>
         </div>
-        <p :style="{color : fontColor}" > <span :style="{color : fontColor}"  class="company-desc">Şirketin Teklifi:</span> {{ this.interviews_offer[this.company_offer] | toCamelCase}}</p>
-     </div>
-        <router-link to="/mulakatlar">
-            <button class="btn btn-mulakatim">Geri</button>   
-        </router-link> 
+            <router-link to="/mulakatlar">
+                <button class="btn btn-mulakatim">Geri</button>   
+            </router-link> 
+        </div>
     </div>
-</div>
 </template>
 <script>
 export default {
     data(){
         return{
-            id: '',
+            id: this.$route.params.id,
             company_name: '',
             company_interview: '',
             company_job: '',
@@ -36,7 +36,6 @@ export default {
         }
     },
     created(){
-        this.id=this.$route.params.id
         this.fetchInterviews();
     },
     methods: {

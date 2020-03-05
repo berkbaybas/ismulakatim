@@ -18,7 +18,7 @@ class InterviewController extends Controller
      */
     public function index()
     {
-        $interview = Interview::orderBy('id','desc')->paginate(4);
+        $interview = Interview::orderBy('id','desc')->paginate(6);
         
         return InterviewResource::collection($interview);
     }

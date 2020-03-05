@@ -28,6 +28,15 @@ a,a:not([href]) {
     text-decoration: none;
     /* no underline */
 }
+a:hover{
+    text-decoration: none;
+}
+button, button:focus, input, input:focus{
+    outline: none !important;
+}
+.btn:focus{
+    box-shadow: none;
+}
 .headline {
     display: block;
     font-family: 'Dosis';
@@ -36,7 +45,9 @@ a,a:not([href]) {
     color: black;
     font-size: 32px;
 }
-
+h1,h2{
+    font-family: 'Dosis';
+}
 .shape-fill {
     fill: #fff;
     -webkit-transform-origin: center;
@@ -175,6 +186,7 @@ a,a:not([href]) {
 .brand-logo{
     height: 100%;
     width: 100%;
+    padding: 15px;
     opacity: .3;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
@@ -189,9 +201,12 @@ a,a:not([href]) {
 .logo-wrapper{
     height: 85px;
     border-radius: 2px;
-    padding: 10px;
     margin: 5px;
-    border: solid 1px rgba(77, 77, 77, 0.5);
+    -webkit-transition: all .3s ease;
+    border: solid 1px #f6f5fd;;
+}
+.logo-wrapper:hover{
+    border: solid 1px #c8c4e4;;
 }
 .disabled{
     cursor: not-allowed;
@@ -204,10 +219,37 @@ a,a:not([href]) {
     padding: 25px 5px 15px 5px;
     border-style: solid;
     border-width: 0 0 4px 0;
-  
     border-radius: 8px 8px 8px 8px;
     box-shadow: 0 0 32px 0 rgba(0,0,0,.08);
+   
 }
+.box-color-1{
+    border-color: #fa73d1;
+    transition: .5s ease;
+}
+.box-color-2{
+    border-color: #52def0;
+    transition: .5s ease;
+}
+.box-color-3{
+    border-color: #5b47ed;
+    transition: .5s ease;
+}
+.box-color-title-1{
+    font-weight: 900;
+    color: #fa73d1;
+}
+.box-color-title-2{
+    font-weight: 900;
+    color: #52def0;
+}
+.box-color-title-3{
+    font-weight: 900;
+    color: #5b47ed;
+}
+.box-color-1:hover, .box-color-2:hover, .box-color-3:hover { 
+    border-width: 4px;
+  }
 .factImg{
     max-height: 380px;
 }
@@ -279,24 +321,7 @@ brandSection
     padding-top: 65px;
     padding-bottom: 65px;
 }
-.box-color-1{
-    border-color: #fa73d1;
-}
-.box-color-2{
-    border-color: #52def0;
-}
-.box-color-3{
-    border-color: #5b47ed;
-}
-.box-color-title-1{
-    color: #fa73d1;
-}
-.box-color-title-2{
-    color: #52def0;
-}
-.box-color-title-3{
-    color: #5b47ed;
-}
+
 
 .wrapperFooter{
     padding: 110px 0 0 0;
