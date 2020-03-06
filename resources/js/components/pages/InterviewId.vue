@@ -7,11 +7,11 @@
             <h2> <span class="company-name">Şirketin Adı:</span> {{ this.company_name | toCamelCase}}</h2>
             <hr>
             <p> <span class="company-desc">Başvurulan İş:</span> {{ this.company_job  | toCamelCase}}</p>
-            <p> <span class="company-desc">Şirket Mülakatı:</span> {{ this.company_interview  | toCamelCase}}</p>
+            <p> <span class="company-desc">Şirket Mülakatı:</span> {{ this.company_interview  | toFirstLetterCamelCase}}</p>
             <div>
             <p> <span class="company-desc">Şirket Soruları:</span></p>
                 <div>
-                    <p v-for="(question,key) in company_question" :key="key">{{key+1}} : {{ question | toCamelCase}} ?</p>
+                    <p v-for="(question,key) in company_question" :key="key">{{key+1}} : {{ question | toFirstLetterCamelCase}} ?</p>
                 </div>
             </div>
             <p :style="{color : fontColor}" > <span :style="{color : fontColor}"  class="company-desc">Şirketin Teklifi:</span> {{ this.interviews_offer[this.company_offer] | toCamelCase}}</p>

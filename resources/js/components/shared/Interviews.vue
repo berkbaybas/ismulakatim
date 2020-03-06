@@ -9,7 +9,7 @@
                     <h2> <span class="company-name">Şirketin Adı:</span> {{ interview.company_name | toCamelCase}}</h2>
                     <hr>
                     <p> <span class="company-desc">Başvurulan İş:</span> {{ interview.company_job | toCamelCase}}</p>
-                    <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview | toCamelCase | toCutInterview}}...</p>
+                    <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview | toFirstLetterCamelCase | toCutInterview}}...</p>
                     <p :style="{color : fontColor(interview.company_offer)}" > <span :style="{color : fontColor(interview.company_offer)}" class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] | toCamelCase}}</p>
                     <router-link class="router_link" :to="{path: interviewLink, params: {id: interview.id } }">
                     <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">Detaylı İncele</button>   

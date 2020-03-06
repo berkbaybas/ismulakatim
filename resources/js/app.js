@@ -58,7 +58,7 @@ const router = new VueRouter({
 Vue.use(Vuelidate)
 
 
-// First Letter Capitalize all word
+// all word Letter Capitalize 
 Vue.filter("toCamelCase" , (value) => {
     var value = value.toLowerCase().split(' ');
     for (var i = 0; i < value.length; i++) {
@@ -69,6 +69,10 @@ Vue.filter("toCamelCase" , (value) => {
     // Directly return the joined string
    
     return value.join(' '); 
+})
+// First Letter Capitalize 
+Vue.filter("toFirstLetterCamelCase" , (value) => {   
+    return value.charAt(0).toUpperCase() + value.slice(1)
 })
 
 

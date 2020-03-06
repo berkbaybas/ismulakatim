@@ -4,6 +4,22 @@
         padding-top: 15px;
         max-width: 100%;
     }
+    .menu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .searchFrom,.blog {
+        display: none;
+    }
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .navbar-nav a:first-child {
+        border-right: none;
+    }
     .factImg {
         max-width: 100%;
     }

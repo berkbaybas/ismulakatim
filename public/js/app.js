@@ -39267,48 +39267,32 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "collapse navbar-collapse",
-              attrs: { id: "navbarNavAltMarkup" }
-            },
-            [
-              _c(
-                "div",
-                { staticClass: "navbar-nav" },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      attrs: {
-                        to: "/mulakatlar",
-                        "active-class": "active",
-                        exact: ""
-                      }
-                    },
-                    [
-                      _c("a", { staticClass: "nav-item nav-link" }, [
-                        _vm._v("Şirketler")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-item nav-link",
-                      attrs: { href: "isler" }
-                    },
-                    [_vm._v("İşler")]
-                  )
-                ],
-                1
-              )
-            ]
-          ),
+          _c("div", { staticClass: "navbar-collapse" }, [
+            _c(
+              "div",
+              { staticClass: "navbar-nav" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: "/mulakatlar",
+                      "active-class": "active",
+                      exact: ""
+                    }
+                  },
+                  [
+                    _c("a", { staticClass: "nav-item nav-link" }, [
+                      _vm._v("Şirketler")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("a", { staticClass: "nav-item nav-link" }, [_vm._v("İşler")])
+              ],
+              1
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "search" }, [
             _c("form", { staticClass: "form-inline searchFrom" }, [
@@ -39342,9 +39326,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("a", { staticClass: "blog", attrs: { href: "blog" } }, [
-                _vm._v("blog >")
-              ])
+              _c("a", { staticClass: "blog" }, [_vm._v("blog >")])
             ],
             1
           )
@@ -39354,28 +39336,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggler",
-        attrs: {
-          type: "button",
-          "data-toggle": "collapse",
-          "data-target": "#navbarNavAltMarkup",
-          "aria-controls": "navbarNavAltMarkup",
-          "aria-expanded": "false",
-          "aria-label": "Toggle navigation"
-        }
-      },
-      [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39486,7 +39447,9 @@ var render = function() {
                     " " +
                       _vm._s(
                         _vm._f("toCutInterview")(
-                          _vm._f("toCamelCase")(interview.company_interview)
+                          _vm._f("toFirstLetterCamelCase")(
+                            interview.company_interview
+                          )
                         )
                       ) +
                       "..."
@@ -39653,7 +39616,10 @@ var render = function() {
             _c("span", { staticClass: "company-desc" }, [
               _vm._v("Şirket Mülakatı:")
             ]),
-            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_interview)))
+            _vm._v(
+              " " +
+                _vm._s(_vm._f("toFirstLetterCamelCase")(this.company_interview))
+            )
           ]),
           _vm._v(" "),
           _c("div", [
@@ -39666,7 +39632,7 @@ var render = function() {
                   _vm._v(
                     _vm._s(key + 1) +
                       " : " +
-                      _vm._s(_vm._f("toCamelCase")(question)) +
+                      _vm._s(_vm._f("toFirstLetterCamelCase")(question)) +
                       " ?"
                   )
                 ])
@@ -39766,7 +39732,10 @@ var render = function() {
             _c("span", { staticClass: "company-desc" }, [
               _vm._v("Şirket Mülakatı:")
             ]),
-            _vm._v(" " + _vm._s(_vm._f("toCamelCase")(this.company_interview)))
+            _vm._v(
+              " " +
+                _vm._s(_vm._f("toFirstLetterCamelCase")(this.company_interview))
+            )
           ]),
           _vm._v(" "),
           _c("div", [
@@ -39779,7 +39748,7 @@ var render = function() {
                   _vm._v(
                     _vm._s(key + 1) +
                       " : " +
-                      _vm._s(_vm._f("toCamelCase")(question)) +
+                      _vm._s(_vm._f("toFirstLetterCamelCase")(question)) +
                       " ?"
                   )
                 ])
@@ -40845,7 +40814,9 @@ var render = function() {
                       " " +
                         _vm._s(
                           _vm._f("toCutInterview")(
-                            _vm._f("toCamelCase")(interview.company_interview)
+                            _vm._f("toFirstLetterCamelCase")(
+                              interview.company_interview
+                            )
                           )
                         ) +
                         "..."
@@ -58085,7 +58056,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   } // mode: "history"
 
 });
-Vue.use(vuelidate__WEBPACK_IMPORTED_MODULE_2___default.a); // First Letter Capitalize all word
+Vue.use(vuelidate__WEBPACK_IMPORTED_MODULE_2___default.a); // all word Letter Capitalize 
 
 Vue.filter("toCamelCase", function (value) {
   var value = value.toLowerCase().split(' ');
@@ -58098,6 +58069,10 @@ Vue.filter("toCamelCase", function (value) {
 
 
   return value.join(' ');
+}); // First Letter Capitalize 
+
+Vue.filter("toFirstLetterCamelCase", function (value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }); // 10 word view for interviews and filteredInterview components
 
 Vue.filter("toCutInterview", function (value) {
