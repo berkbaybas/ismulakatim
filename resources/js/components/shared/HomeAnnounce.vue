@@ -4,13 +4,13 @@
         <div class="announce">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-md-12 col-12">
                         <h1 class="headline wow slideInLeft">Mülakata mı Gireceksiniz ?</h1>
                         <h4 class="description">Sizde hemen gireceğiniz mülakatlar hakkında gerçek insanlardan mülakatları hakkında kayda değer bilgileri öğrenin veya girdiğiniz mülakat detaylarını paylaşın.</h4>
                         <router-link to="/mulakatekle"><a class="btn btn-mulakatim">Mülakat Ekle</a></router-link>
                      
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-md-12 col-12">
                         <img class="header-img" :src="'images/header-img.png'" alt="">
                     </div>
                 </div>

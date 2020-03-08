@@ -17,10 +17,31 @@ import Interviews from '../shared/Interviews';
 import FilterInterview from '../shared/FilterInterview';
 
 export default {
+    metaInfo: {
+        title: 'işmülakatım',
+        titleTemplate: '%s - Tüm mülakatlar',
+        htmlAttrs: {
+            lang: 'tr',
+            amp: true
+        },
+        meta: [{
+                vmid: 'description',
+                name: 'description',
+                content: 'Mülakata girmeden önce giriceğiniz mülakat hakkında bilgi sahibi olun!'
+            },
+            {
+                vmid: 'keywords',
+                name: 'keywords',
+                content: 'mülakatlar,mülakat tavsiyeleri,iş mülakatı, mülakatlar hakkında,mülakat'
+            }
+        ],
+
+    },
     name: "EntireInterviews",
-    components: 
+    components: {
         Interviews,
         FilterInterview,
+    }
       
 }
 </script>

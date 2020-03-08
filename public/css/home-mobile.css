@@ -17,6 +17,11 @@
         flex-direction: row;
         justify-content: space-around;
     }
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+        color: white;
+    }
     .navbar-nav a:first-child {
         border-right: none;
     }
@@ -49,4 +54,22 @@
     .info{
         margin-top: 15px;
     }
+    .wrapper-company-filter {
+        margin-top: 30px;
+ }
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 768px) { 
+    .why-column-title {
+        height: 64px;
+    }
+    .header-img{
+        padding-top: 15px;
+        max-width: 100%;
+    }
+    .factImg {
+        margin-top: 2rem;
+        width: 100%;
+        max-width: 100%;
+    }
+
  }

@@ -26,6 +26,31 @@
 </template>
 <script>
 export default {
+    metaInfo() {
+        return {
+            title: this.$route.params.company,
+            titleTemplate: (title) => {
+                // If undefined or blank then we don't need the hyphen
+                return `${title} şirketi mülakatları`;
+            },
+            htmlAttrs: {
+                lang: 'tr',
+                amp: true
+            },
+            meta: [{
+                    vmid: 'description',
+                    name: 'description',
+                    content: `${this.$route.params.company} şirketi mülakatları ${this.$route.params.company} şirketi mülakatlarında sorulan sorular ${this.$route.params.company} şirketi mülakat tavsiyeleri`
+                },
+                {
+                    vmid: 'keywords',
+                    name: 'keywords',
+                    content: `${this.$route.params.company} şirketi mülakarları,${this.$route.params.company} mülakatları,${this.$route.params.company} mülakat`
+                }
+            ]
+        }
+
+    },
     data(){
         return{
             interviews: [],
@@ -50,12 +75,10 @@ export default {
     }
     },
     created(){
-        fetch(`api/mulakatlar/${this.$route.params.company}`)
+        fetch(`/api/mulakatlar/${this.$route.params.company}`)
             .then(res => res.json())
             .then(res => {
-               this.interviews = res.data;
-               console.log(this.interviews);
-               
+               this.interviews = res.data;    
             })
     },
      computed : {
@@ -75,9 +98,6 @@ body{
     padding-bottom: 30px;
     color: #002a5b;
     font-size: 42px;
-}
-.wrapper-filtering-interview{
-    /* margin-top: 30px */
 }
 .card{
     border-radius: 14px;

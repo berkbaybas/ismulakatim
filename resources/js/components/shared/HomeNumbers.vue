@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-12 col-lg-5">
                 <h5 class="headline headline-number">Sayılarla Biz</h5>                        
                 <div class="row">
                     <div class="col-md-4 col-4">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-12 col-lg-7">
                 <img class="factImg" :src="'images/facts.png'" alt="">
             </div>
         </div>

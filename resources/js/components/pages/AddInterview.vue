@@ -18,9 +18,10 @@ import AddInterviewInfo from '../shared/AddInterviewInfo';
 
 export default {
     name: "AddInterview",
-    components: 
+    components: {
         AddInterviewForm,
         AddInterviewInfo,
+    }
 }
 </script>
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper-interview">
+<div class="wrapper-interview">
     <div class="container">
         <h2 class="text-center interviews-tittle">Tüm Mülakatlar</h2>
         <div class="row">
@@ -10,30 +10,28 @@
                     <hr>
                     <p> <span class="company-desc">Başvurulan İş:</span> {{ interview.company_job | toCamelCase}}</p>
                     <p> <span class="company-desc">Şirket Mülakatı:</span> {{ interview.company_interview | toFirstLetterCamelCase | toCutInterview}}...</p>
-                    <p :style="{color : fontColor(interview.company_offer)}" > <span :style="{color : fontColor(interview.company_offer)}" class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] | toCamelCase}}</p>
+                    <p :style="{color : fontColor(interview.company_offer)}"> <span :style="{color : fontColor(interview.company_offer)}" class="company-desc">Şirketin Teklifi:</span> {{ interviews_offer[interview.company_offer] | toCamelCase}}</p>
                     <router-link class="router_link" :to="{path: interviewLink, params: {id: interview.id } }">
-                    <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">Detaylı İncele</button>   
-                    </router-link> 
+                        <button class="btn btn-mulakatim" @click="examineInterview(interview.id)">Detaylı İncele</button>
+                    </router-link>
                 </div>
             </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li v-bind:class="[{disabled : ! pagination.prev_page_url}]" class="page-item"><a
-                        @click="fetchInterviews(pagination.prev_page_url)" class="page-link" href="#">Önceki Sayfa</a></li>
-                        <li class="page-item disabled"><a class="page-link text-dark" href="#">{{pagination.last_page}}'sayfadan {{pagination.current_page}}.si</a></li>
-                        <li v-bind:class="[{disabled : ! pagination.next_page_url}]" class="page-item"><a
-                        @click="fetchInterviews(pagination.next_page_url)" class="page-link" href="#">Sonraki Sayfa</a></li>
-                    </ul>
-                </nav>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li v-bind:class="[{disabled : ! pagination.prev_page_url}]" class="page-item"><a @click="fetchInterviews(pagination.prev_page_url)" class="page-link" href="#">Önceki Sayfa</a></li>
+                    <li class="page-item disabled"><a class="page-link text-dark" href="#">{{pagination.last_page}}'sayfadan {{pagination.current_page}}.si</a></li>
+                    <li v-bind:class="[{disabled : ! pagination.next_page_url}]" class="page-item"><a @click="fetchInterviews(pagination.next_page_url)" class="page-link" href="#">Sonraki Sayfa</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
 export default {
-    data(){
-        return{
+    data() {
+        return {
             interviews: [],
             // interview : {
             //     id: '',
@@ -43,109 +41,113 @@ export default {
             //     company_questions: '',
             //     company_offer: ''
             // },
-            interviews_offer :["Teklif yapıldı","Teklif Yapılmadı","Mülakat Yakın Zamanda Gerçekleşti"],
+            interviews_offer: ["Teklif yapıldı", "Teklif Yapılmadı", "Mülakat Yakın Zamanda Gerçekleşti"],
             // interviews_quest : [],
             pagination: {},
             edit: false,
             id: '' // mülakat id sini çekmek için
         }
     },
-    created(){  
+    created() {
         this.fetchInterviews();
     },
     methods: {
-        fetchInterviews(page_url){
+        fetchInterviews(page_url) {
             let vm = this;
             page_url = page_url || "api/mulakatlar"
             fetch(page_url)
                 .then(res => res.json())
-                .then(res => {   
-                    console.log(res.data);
-                    
+                .then(res => {
                     this.interviews = res.data
                     // this.interviews_quest = res.data.company_interview.split("+")
                     vm.makePagination(res.meta, res.links);
                 })
-                .catch(err => console.log(err)
-                )
+                .catch(err => console.log(err))
         },
-        examineInterview(id){
-           this.id = id // mülakat id sini çekmek için
+        examineInterview(id) {
+            this.id = id // mülakat id sini çekmek için
         },
-        makePagination(meta, links){
+        makePagination(meta, links) {
             let pagination = {
-                current_page : meta.current_page,
-                last_page : meta.last_page,
-                next_page_url : links.next,
-                prev_page_url : links.prev
+                current_page: meta.current_page,
+                last_page: meta.last_page,
+                next_page_url: links.next,
+                prev_page_url: links.prev
             }
             this.pagination = pagination;
         },
-        fontColor(value){
-            if(value == 0){     
+        fontColor(value) {
+            if (value == 0) {
                 return "green"
-            }
-            else if(value == 1){
+            } else if (value == 1) {
                 return "red"
-            }
-            else if(value == 2){
+            } else if (value == 2) {
                 return "orange"
             }
         }
     },
-    computed : {
-        interviewLink(){
+    computed: {
+        interviewLink() {
             return `/mulakat/${this.id}`
         },
- 
+
     }
 }
 </script>
+
 <style scoped>
-.wrapper-interview{
+.wrapper-interview {
     padding-bottom: 30px
 }
-.interviews-tittle{
+
+.interviews-tittle {
     padding-top: 30px;
     padding-bottom: 30px;
     color: #002a5b;
     font-size: 42px;
 }
-.card{
+
+.card {
     border-radius: 14px;
     border: 0;
     background: #fff;
     margin-bottom: 1.5rem;
-    box-shadow: 0 6px 8px -4px rgba(0,42,91,.1);
+    box-shadow: 0 6px 8px -4px rgba(0, 42, 91, .1);
     padding: 0 2rem 1.2rem;
 }
-span.company-desc{
+
+span.company-desc {
     display: inline;
     color: #002a5b;
     font-size: 18px;
     font-weight: bold;
 }
-span.company-name{
+
+span.company-name {
     display: inline;
     color: #002a5b;
     font-size: 32px;
     font-weight: bold;
 }
+
 .card h2 {
     color: #002a5b;
 }
-.card p{
+
+.card p {
     color: #002a5b;
 }
-.page-item{
+
+.page-item {
     border-radius: 4px;
     display: inline-block;
 
     margin: 5px;
-    background: rgba(0,42,91,.08);
+    background: rgba(0, 42, 91, .08);
     margin-bottom: 15px;
 }
-.page-link{
+
+.page-link {
     font-size: 1.0rem;
     color: #002a5b;
     -webkit-border-radius: 4px;
@@ -158,11 +160,10 @@ span.company-name{
     border: 0;
     outline: none !important;
 }
-.page-item a {
-    
-    
-}
-.router_link{
+
+.page-item a {}
+
+.router_link {
     width: 155px
 }
 </style>

@@ -51,8 +51,8 @@ const router = new VueRouter({
      routes,
      scrollBehavior(to, from, savedPosition){
          return {x : 0, y : 0}
-     }
-    // mode: "history"
+     },
+     mode: "history"
 })
 
 Vue.use(Vuelidate)
@@ -81,6 +81,13 @@ Vue.filter("toCutInterview" , (value) => {
     var value = value.substring(0,20);
     return value
 })
+
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
+
+import VueMeta from 'vue-meta'
+Vue.use(VueMeta)
+
 
 
 /**
