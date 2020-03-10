@@ -56,6 +56,11 @@
     }
     .wrapper-company-filter {
         margin-top: 30px;
+    }
+    .brand-logo {
+     opacity: 1;
+    filter: none; 
+}
  }
 /* Small devices (landscape phones, 576px and up) */
 @media (max-width: 768px) { 

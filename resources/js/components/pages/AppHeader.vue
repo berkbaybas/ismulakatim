@@ -50,3 +50,13 @@
 
 </header>
 </template>
+<style scoped>
+    .navbar-brand{
+        font-family: 'Pangolin', cursive;
+        font-weight: 900;
+        color: #f4d672;
+    }
+    .navbar-brand:hover{
+        color: #f4d672;
+    }
+</style>
